@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { PlusCircle, PencilSquare, Trash, CheckCircle } from 'react-bootstrap-icons';
+import { PlusCircle } from 'react-bootstrap-icons';
+import Course from "../component/Course.jsx";
+
 
 export const CourseTracker = () => {
     const { store, actions } = useContext(Context);
@@ -24,7 +26,7 @@ export const CourseTracker = () => {
     const handleEditClick = (course) => {
         setEditMode(true);
         setCurrentCourse(course);
-        
+
         setCourseFormData({
             ...course,
             exp_starting_date: course.exp_starting_date ? new Date(course.exp_starting_date).toISOString().substring(0, 10) : "",
@@ -223,7 +225,7 @@ export const CourseTracker = () => {
                             <button className="btn btn-success" type="button" onClick={handleAddCourse}>
                                 {!currentCourse && <PlusCircle className="me-2" />}
                                 {/* {editMode ? "Update Course" : "Add Course"} */}
-                                {!currentCourse ? "Add Course" : "Update Course" }
+                                {!currentCourse ? "Add Course" : "Update Course"}
                             </button>
                             {editMode && (
                                 <button className="btn btn-secondary ms-2" type="button" onClick={handleCancelEdit}>
@@ -235,38 +237,18 @@ export const CourseTracker = () => {
                 </div>
             )}
 
-            {/* List of Courses */}
             <ul className="list-group">
                 {store.courses?.map((course) => (
-                    <li
+                    <Course
                         key={course.id}
-                        className="list-group-item d-flex justify-content-between align-items-center"
-                    >
-                        <div>
-                            <h5>{course.name} <span className="badge bg-secondary">{course.number}</span></h5>
-                            <p className="mb-0">
-                                <small>
-                                    {course.start_date && `Started: ${new Date(course.start_date).toLocaleDateString()}`}
-                                    {course.due_date && ` | Due: ${new Date(course.due_date).toLocaleDateString()}`}
-                                </small>
-                            </p>
-                        </div>
-                        <div>
-                            {course.is_completed && <CheckCircle className="text-success me-2" />}
-                            {editMode && ( // Only show these buttons if in edit mode
-                    <>
-                        <button className="btn btn-outline-primary btn-sm me-2" onClick={() => handleEditClick(course)}>
-                            <PencilSquare />
-                        </button>
-                        <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteCourse(course.id)}>
-                            <Trash />
-                        </button>
-                    </>
-                )}
-                        </div>
-                    </li>
+                        course={course}
+                        editMode={editMode}
+                        handleEditClick={handleEditClick}
+                        handleDeleteCourse={handleDeleteCourse}
+                    />
                 ))}
             </ul>
+
         </div>
     );
 };
