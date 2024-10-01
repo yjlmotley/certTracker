@@ -23,10 +23,10 @@ const Course = ({ course, editMode, handleEditClick, handleDeleteCourse }) => {
                 )}
                 {editMode && ( // Only show buttons if in edit mode
                     <div className={`d-flex flex-column flex-md-row ${editMode ? "btn-group-vertical" : ""}`}>
-                        <button className="btn btn-outline-primary btn-sm m-1" onClick={() => handleEditClick(course)}>
+                        <button className="btn btn-outline-primary btn-sm m-1 rounded" onClick={() => handleEditClick(course)}>
                             <PencilSquare />
                         </button>
-                        <button className="btn btn-outline-danger btn-sm m-1" onClick={() => handleDeleteCourse(course.id)}>
+                        <button className="btn btn-outline-danger btn-sm m-1 rounded" onClick={() => handleDeleteCourse(course.id)}>
                             <Trash />
                         </button>
                     </div>
