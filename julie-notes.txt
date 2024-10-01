@@ -1,0 +1,6 @@
+TODOS: 
+- [ ] incorporate the edit courses (not done yet, but some of the code is there: 
+    make sure to double check routes.py, flux.js, courseTracker.js, possibly the Course.jsx)
+- [ ] courseTracker.js: In the other details input, put some margin/padding below the flating label (or padding top to the actual value)
+- [ ] add an option to see the details
+- [ ] add a habit tracker page as well maybe?

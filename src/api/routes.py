@@ -47,6 +47,26 @@ def add_course():
     db.session.commit()
     return jsonify(new_course.serialize()), 201 # Created status code
 
+@api.route('/courses/<int:course_id>', methods=['PUT'])
+def update_course(course_id):
+    course_data = request.get_json()
+    course = Course.query.get(course_id)
+    if not course:
+        return jsonify({'error': 'Course not found'}), 404
+
+    course.is_completed = course_data['is_completed']
+    course.number = course_data['number']
+    course.name = course_data['name']
+    course.exp_starting_date = course_data['exp_starting_date']
+    course.start_date = course_data['start_date']
+    course.due_date = course_data['due_date']
+    course.exp_timeframe = course_data['exp_timeframe']
+    course.other_details = course_data['other_details']
+
+    db.session.commit()
+    return jsonify(course.serialize()), 200  # OK status code
+
+
 # Route to delete a course by ID (assuming course ID is in the URL)
 @api.route('/courses/<int:course_id>', methods=['DELETE'])
 def delete_course(course_id):
@@ -56,4 +76,4 @@ def delete_course(course_id):
 
     db.session.delete(course)
     db.session.commit()
-    return jsonigy({'msg': 'Course deleted'}), 204 # No Content status code
+    return jsonify({'msg': 'Course deleted'}), 204 # No Content status code

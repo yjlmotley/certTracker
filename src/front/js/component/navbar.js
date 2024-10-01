@@ -1,27 +1,37 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Book, House, PersonCircle } from 'react-bootstrap-icons';
 
 export const Navbar = () => {
 	return (
-		<nav className="navbar navbar-light bg-light">
+		<nav className="navbar navbar-light bg-light mb-4">
 			<div className="container">
-				<Link to="/">
-					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
+				<Link to="/" className="navbar-brand">
+					<Book className="me-2" />
+					CourseKeeper
 				</Link>
-				<div className="ml-auto">
-					<Link to="/demo">
-						<button className="btn btn-primary">Check the Context in action</button>
+				<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span className="navbar-toggler-icon"></span>
+				</button>
+				<div className="collapse navbar-collapse" id="navbarNav">
+					<ul className="navbar-nav me-auto">
+						<li className="nav-item">
+							<Link to="/" className="nav-link">
+								<House className="me-1" />
+								Home
+							</Link>
+						</li>
+						<li className="nav-item">
+							<Link to="/course-tracker" className="nav-link">
+								<Book className="me-1" />
+								Course Tracker
+							</Link>
+						</li>
+					</ul>
+					<Link to="/login" className="btn btn-outline-primary">
+						<PersonCircle className="me-1" />
+						Login
 					</Link>
-					<div className="dropdown">
-						<button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-							Dropdown button
-						</button>
-						<ul className="dropdown-menu">
-							<li>
-								<Link className="dropdown-item" to="/course-tracker">Course Tracker</Link>
-								</li>
-						</ul>
-					</div>
 				</div>
 			</div>
 		</nav>
