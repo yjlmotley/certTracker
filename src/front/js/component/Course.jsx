@@ -15,17 +15,21 @@ const Course = ({ course, editMode, handleEditClick, handleDeleteCourse }) => {
                     </small>
                 </p>
             </div>
-            <div className="d-flex flex-end">
-                {course.is_completed && <CheckCircle className="text-success me-2 my-auto" />}
+            <div className="d-flex align-items-center justify-content-center">
+                {course.is_completed && (
+                    <div className="px-2">
+                        <CheckCircle className="text-success my-auto" />
+                    </div>
+                )}
                 {editMode && ( // Only show buttons if in edit mode
-                    <>
+                    <div className={`d-flex flex-column flex-md-row ${editMode ? "btn-group-vertical" : ""}`}>
                         <button className="btn btn-outline-primary btn-sm m-1" onClick={() => handleEditClick(course)}>
                             <PencilSquare />
                         </button>
                         <button className="btn btn-outline-danger btn-sm m-1" onClick={() => handleDeleteCourse(course.id)}>
                             <Trash />
                         </button>
-                    </>
+                    </div>
                 )}
             </div>
         </li>
