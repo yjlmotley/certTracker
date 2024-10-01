@@ -78,7 +78,7 @@ export const CourseTracker = () => {
     };
 
     const handleCancelEdit = () => {
-        setEditMode(false);
+        // setEditMode(false);
         setCurrentCourse(null);
         setCourseFormData({
             is_completed: false,
@@ -225,7 +225,7 @@ export const CourseTracker = () => {
                                 {/* {editMode ? "Update Course" : "Add Course"} */}
                                 {!currentCourse ? "Add Course" : "Update Course" }
                             </button>
-                            {editMode && (
+                            {currentCourse && (
                                 <button className="btn btn-secondary ms-2" type="button" onClick={handleCancelEdit}>
                                     Cancel
                                 </button>
