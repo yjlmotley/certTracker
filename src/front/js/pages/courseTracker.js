@@ -5,7 +5,8 @@ import { PlusCircle, PencilSquare, Trash, CheckCircle } from 'react-bootstrap-ic
 export const CourseTracker = () => {
     const { store, actions } = useContext(Context);
     const [editMode, setEditMode] = useState(false);
-    const [newCourse, setNewCourse] = useState({
+    const [currentCourse, setCurrentCourse] = useState(null);
+    const [courseFormData, setCourseFormData] = useState({
         is_completed: false,
         number: "",
         name: "",
@@ -20,29 +21,46 @@ export const CourseTracker = () => {
         actions.getCourses();
     }, []);
 
-
-    const handleEditClick = () => setEditMode(!editMode);
+    const handleEditClick = (course) => {
+        setEditMode(true);
+        setCurrentCourse(course);
+        
+        setCourseFormData({
+            ...course,
+            exp_starting_date: course.exp_starting_date ? new Date(course.exp_starting_date).toISOString().substring(0, 10) : "",
+            start_date: course.start_date ? new Date(course.start_date).toISOString().substring(0, 10) : "",
+            due_date: course.due_date ? new Date(course.due_date).toISOString().substring(0, 10) : "",
+        });
+    };
 
     const handleNewCourseChange = (event) => {
         const { name, value, type, checked } = event.target;
-        setNewCourse({ ...newCourse, [name]: type === 'checkbox' ? checked : value });
+        setCourseFormData({ ...courseFormData, [name]: type === 'checkbox' ? checked : value });
     };
 
     const handleAddCourse = async () => {
-        const { exp_starting_date, start_date, due_date } = newCourse;
+        const { exp_starting_date, start_date, due_date } = courseFormData;
 
         // Convert empty date strings to null
         const courseData = {
-            ...newCourse,
+            ...courseFormData,
             exp_starting_date: exp_starting_date || null,
             start_date: start_date || null,
             due_date: due_date || null,
         };
 
+        if (editMode && currentCourse) {
+            await actions.editCourse(currentCourse.id, courseData);
+        } else {
+            await actions.addCourses(courseData);
+        }
 
-        await actions.addCourses(courseData);
         await actions.getCourses();
-        setNewCourse({
+
+        // Reset the form and state
+        // setEditMode(false);
+        setCurrentCourse(null);
+        setCourseFormData({
             is_completed: false,
             number: "",
             name: "",
@@ -54,29 +72,50 @@ export const CourseTracker = () => {
         });
     };
 
-    const handleEditCourse = async () => {
-        // Assuming there's logic to get the updated course data
-        const updatedCourseData = { /* new values for the course */ };
-        await actions.editCourse(course.id, updatedCourseData);
-    };
-
     const handleDeleteCourse = async (courseId) => {
         await actions.deleteCourses([courseId]);
         await actions.getCourses();
     };
 
+    const handleCancelEdit = () => {
+        setEditMode(false);
+        setCurrentCourse(null);
+        setCourseFormData({
+            is_completed: false,
+            number: "",
+            name: "",
+            exp_starting_date: "",
+            start_date: "",
+            due_date: "",
+            exp_timeframe: "",
+            other_details: "",
+        });
+    };
+
+    const toggleEditMode = () => {
+        setEditMode(!editMode);
+        // Reset form data when exiting edit mode
+        if (editMode) {
+            handleCancelEdit();
+        }
+    };
+
     return (
         <div className="container mt-5">
             <h1 className="text-center mb-4">Course Tracker</h1>
+
+            {/* Toggle Edit Mode Button */}
             <div className="mb-4 text-center">
                 <button
                     className={`btn ${editMode ? "btn-outline-secondary" : "btn-primary"}`}
-                    onClick={handleEditClick}
+                    onClick={toggleEditMode}
                 >
                     {editMode ? "Exit Edit Mode" : "Edit Courses"}
                 </button>
             </div>
-            {editMode && (
+
+            {/* Form for adding or editing a course */}
+            {editMode && ( // Only show form if in edit mode
                 <div className="card mb-4">
                     <div className="card-body">
                         <form>
@@ -88,7 +127,7 @@ export const CourseTracker = () => {
                                             className="form-check-input"
                                             id="is_completed"
                                             name="is_completed"
-                                            checked={newCourse.is_completed}
+                                            checked={courseFormData.is_completed}
                                             onChange={handleNewCourseChange}
                                         />
                                         <label className="form-check-label" htmlFor="is_completed">Completed</label>
@@ -100,7 +139,7 @@ export const CourseTracker = () => {
                                             id="number"
                                             placeholder="Course Number"
                                             name="number"
-                                            value={newCourse.number}
+                                            value={courseFormData.number}
                                             onChange={handleNewCourseChange}
                                         />
                                         <label htmlFor="number">Course Number</label>
@@ -112,7 +151,7 @@ export const CourseTracker = () => {
                                             id="name"
                                             placeholder="Course Name"
                                             name="name"
-                                            value={newCourse.name}
+                                            value={courseFormData.name}
                                             onChange={handleNewCourseChange}
                                         />
                                         <label htmlFor="name">Course Name</label>
@@ -126,7 +165,7 @@ export const CourseTracker = () => {
                                             id="exp_starting_date"
                                             placeholder="Expected Starting Date"
                                             name="exp_starting_date"
-                                            value={newCourse.exp_starting_date}
+                                            value={courseFormData.exp_starting_date}
                                             onChange={handleNewCourseChange}
                                         />
                                         <label htmlFor="exp_starting_date">Expected Starting Date</label>
@@ -138,7 +177,7 @@ export const CourseTracker = () => {
                                             id="start_date"
                                             placeholder="Start Date"
                                             name="start_date"
-                                            value={newCourse.start_date}
+                                            value={courseFormData.start_date}
                                             onChange={handleNewCourseChange}
                                         />
                                         <label htmlFor="start_date">Start Date</label>
@@ -150,7 +189,7 @@ export const CourseTracker = () => {
                                             id="due_date"
                                             placeholder="Due Date"
                                             name="due_date"
-                                            value={newCourse.due_date}
+                                            value={courseFormData.due_date}
                                             onChange={handleNewCourseChange}
                                         />
                                         <label htmlFor="due_date">Due Date</label>
@@ -164,7 +203,7 @@ export const CourseTracker = () => {
                                     id="exp_timeframe"
                                     placeholder="Expected Timeframe"
                                     name="exp_timeframe"
-                                    value={newCourse.exp_timeframe}
+                                    value={courseFormData.exp_timeframe}
                                     onChange={handleNewCourseChange}
                                 />
                                 <label htmlFor="exp_timeframe">Expected Timeframe</label>
@@ -176,19 +215,27 @@ export const CourseTracker = () => {
                                     placeholder="Other Details"
                                     style={{ height: "100px" }}
                                     name="other_details"
-                                    value={newCourse.other_details}
+                                    value={courseFormData.other_details}
                                     onChange={handleNewCourseChange}
                                 />
                                 <label htmlFor="other_details">Other Details</label>
                             </div>
                             <button className="btn btn-success" type="button" onClick={handleAddCourse}>
-                                <PlusCircle className="me-2" />
-                                Add Course
+                                {!currentCourse && <PlusCircle className="me-2" />}
+                                {/* {editMode ? "Update Course" : "Add Course"} */}
+                                {!currentCourse ? "Add Course" : "Update Course" }
                             </button>
+                            {editMode && (
+                                <button className="btn btn-secondary ms-2" type="button" onClick={handleCancelEdit}>
+                                    Cancel
+                                </button>
+                            )}
                         </form>
                     </div>
                 </div>
             )}
+
+            {/* List of Courses */}
             <ul className="list-group">
                 {store.courses?.map((course) => (
                     <li
@@ -206,16 +253,16 @@ export const CourseTracker = () => {
                         </div>
                         <div>
                             {course.is_completed && <CheckCircle className="text-success me-2" />}
-                            {editMode && (
-                                <>
-                                    <button className="btn btn-outline-primary btn-sm me-2">
-                                        <PencilSquare />
-                                    </button>
-                                    <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteCourse(course.id)}>
-                                        <Trash />
-                                    </button>
-                                </>
-                            )}
+                            {editMode && ( // Only show these buttons if in edit mode
+                    <>
+                        <button className="btn btn-outline-primary btn-sm me-2" onClick={() => handleEditClick(course)}>
+                            <PencilSquare />
+                        </button>
+                        <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteCourse(course.id)}>
+                            <Trash />
+                        </button>
+                    </>
+                )}
                         </div>
                     </li>
                 ))}

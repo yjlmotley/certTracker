@@ -44,7 +44,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			editCourse: async (courseId, updatedCourseData) => {
 				try {
-					const response = await fetch(`http://your-api-url/courses/${courseId}`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/courses/${courseId}`, {
 						method: "PUT",
 						headers: {
 							"Content-Type": "application/json",
