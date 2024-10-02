@@ -8,4 +8,4 @@ npm run build
 pipenv install
 
 # pipenv run upgrade
-pipenv run reset_db
+pipenv run reset_db_prod
