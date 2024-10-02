@@ -13,14 +13,14 @@ CORS(api)
 
 
 # the following route is only for example purposes --------------------------------------------------------------------
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
+# @api.route('/hello', methods=['POST', 'GET'])
+# def handle_hello():
 
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
+#     response_body = {
+#         "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
+#     }
 
-    return jsonify(response_body), 200
+#     return jsonify(response_body), 200
 # ---------------------------------------------------------------------------------------------------------------------
 
 @api.route('/courses', methods=['GET'])
@@ -45,6 +45,7 @@ def add_course():
         is_completed=course_data['is_completed'],
         number=course_data['number'],
         name=course_data['name'],
+        # don't include the order = (auto calculated in models.py)
         exp_starting_date=course_data['exp_starting_date'],
         start_date=course_data['start_date'],        
         due_date=course_data['due_date'],
@@ -68,6 +69,7 @@ def update_course(course_id):
     course.is_completed = course_data['is_completed']
     course.number = course_data['number']
     course.name = course_data['name']
+    course.order = course_data.get('order', course.order)
     course.exp_starting_date = course_data['exp_starting_date']
     course.start_date = course_data['start_date']
     course.due_date = course_data['due_date']
@@ -78,6 +80,19 @@ def update_course(course_id):
     db.session.commit()
     return jsonify(course.serialize()), 200  # OK status code
 
+@api.route('/courses/reorder', methods=['PUT'])
+def reorder_courses():
+    courses_order = request.json
+    try:
+        for course_data in courses_order:
+            course = Course.query.get(course_data['id'])
+            if course:
+                course.order = course_data['order']
+        db.session.commit()
+        return jsonify({'message': 'Courses reordered successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
 
 # Route to delete a course by ID (assuming course ID is in the URL)
 @api.route('/courses/<int:course_id>', methods=['DELETE'])
