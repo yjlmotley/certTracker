@@ -1,0 +1,6 @@
+@media (max-width: 576px) {  
+    .btn-group-vertical .btn {
+        display: block;
+        width: 100%;
+    }
+}

@@ -32,6 +32,7 @@ class Course(db.Model):
     exp_starting_date= db.Column(db.Date, nullable=True)
     start_date= db.Column(db.Date, nullable=True)
     due_date= db.Column(db.Date, nullable=True)
+    expiration_date=db.Column(db.Date, nullable=True)
     exp_timeframe= db.Column(db.String(50), nullable=True)
     other_details= db.Column(db.String(5000), nullable=True)
 
@@ -47,10 +48,10 @@ class Course(db.Model):
             "exp_starting_date": self.exp_starting_date,
             "start_date": self.start_date,
             "due_date": self.due_date,
+            "expiration_date": self.expiration_date,
             "exp_timeframe": self.exp_timeframe,
             "other_details": self.other_details
         }
 
 # TODO: Make the Course recursive to the user (if user gets deleted, their courses get deleted as well)
 # TODO: Assign the course to the username
-# TODO: (optional: Have the option to hide the columns or add new columns )

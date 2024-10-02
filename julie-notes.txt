@@ -3,4 +3,17 @@ TODOS:
 - [ ] when editing or adding a new course finishes, I want the page to go back to the top of the screen possibly
 - [ ] courseTracker.js: In the other details input, put some margin/padding below the flating label (or padding top to the actual value)
 - [ ] add an option to see the details
-- [ ] add a habit tracker page as well maybe?
+- [ ] add a habit tracker page/project tracker/cert tracker as well maybe?
+- [ ] minimize, pop out FORM (new browser/tab option that still sends the requests) (keep in mind
+you'll probably have to export/import Modal for the course/project form)
+- [ ] edit courses button only showing if you are the user.
+(anyone with the link should be able to see the front end page)
+- [ ] makes you turn the addBlock off and refresh to see the page (put little adds - not too much)
+- [ ] add an expires_date (course and/or certs)
+
+- [ ] be able to radio check what you what to see 
+or...
+- [ ] when is_finished, it shows started & finished but when it's not, it shows expected_start_date, (start_date), due date
+
+
+- [ ] bug checks: max characters check/alerts
