@@ -7,5 +7,5 @@ npm run build
 
 pipenv install
 
-# pipenv run upgrade
-pipenv run reset_db_prod
+pipenv run upgrade
+# pipenv run reset_db_prod
