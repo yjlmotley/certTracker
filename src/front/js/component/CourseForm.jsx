@@ -187,7 +187,7 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                                         value={courseFormData.due_date}
                                         onChange={handleCourseChange}
                                     />
-                                    <label htmlFor="due_date">Due/ Finished Date</label>
+                                    <label htmlFor="due_date">Due/ Completed Date</label>
                                 </div>
                                 <div className="form-floating mb-3">
                                     <input

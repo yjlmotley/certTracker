@@ -31,22 +31,42 @@ const Course = ({ course, editMode, handleEditClick, handleDeleteCourse, index, 
 
     drag(drop(ref));
 
+
+    const formatDate = (date) => new Date(date).toLocaleDateString();
+    const getCourseDetails = () => {
+        const details = [];
+        if (course.is_completed) {
+            if (course.start_date) details.push(`Started: ${formatDate(course.start_date)}`);
+            if (course.due_date) details.push(`Completed: ${formatDate(course.due_date)}`);
+            if (course.expiration_date) details.push(`Expires: ${formatDate(course.expiration_date)}`);
+        } else {
+            if (course.exp_starting_date) details.push(`Start By: ${formatDate(course.exp_starting_date)}`);
+            if (course.start_date) details.push(`Started: ${formatDate(course.start_date)}`);
+            if (course.due_date) details.push(`Due: ${formatDate(course.due_date)}`);
+            if (course.expiration_date) details.push(`Expires: ${formatDate(course.expiration_date)}`);
+        }
+        return details.join(' | ');
+    };
+
     return (
-        <li ref={ref} key={course.id} className="list-group-item d-flex" style={{ opacity: isDragging ? 0.5 : 1 }}>
+        <li ref={ref} key={course.id} className="list-group-item d-flex align-items-center" style={{ opacity: isDragging ? 0.5 : 1 }}>
             {editMode && (
                 <div className="me-3 d-flex align-items-center">
                     <ThreeDotsVertical style={{ cursor: 'move' }} />
                 </div>
             )}
             <div>
-                <h5>
-                    {course.name} <span className="badge bg-secondary">{course.number}</span>
+                <h5 className="d-flex align-items-center m-0">
+                    <span className="me-2">{course.name}</span>
+                    <span className="badge bg-secondary me-2">{course.number}</span>
+                    {course.exp_timeframe && (
+                        <span className="text-muted fs-6 fw-normal">
+                            ({course.exp_timeframe})
+                        </span>
+                    )}
                 </h5>
                 <p className="mb-0">
-                    <small>
-                        {course.start_date && `Started: ${new Date(course.start_date).toLocaleDateString()}`}
-                        {course.due_date && ` | Due: ${new Date(course.due_date).toLocaleDateString()}`}
-                    </small>
+                    <small>{getCourseDetails()}</small>
                 </p>
             </div>
             <div className="d-flex align-items-center ms-auto">
