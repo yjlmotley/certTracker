@@ -1,4 +1,5 @@
 TODOS: 
+- [ ] for the date part, make sure that you're not allowed to put in year past 9999 (date bug)
 - [ ] make the courses sortable by expected start date, start date, due date, by course number, course number, maybe a custom option so the users can move it around as needed
 - [ ] when editing or adding a new course finishes, I want the page to go back to the top of the screen possibly
 - [ ] courseTracker.js: In the other details input, put some margin/padding below the flating label (or padding top to the actual value)
@@ -17,3 +18,7 @@ or...
 
 
 - [ ] bug checks: max characters check/alerts
+
+
+-------- installs needed ----------
+* npm install react-dnd react-dnd-html5-backend

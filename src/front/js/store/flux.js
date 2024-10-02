@@ -3,18 +3,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			courses: [],
 			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
 		},
 		actions: {
 			getCourses: async () => {
@@ -27,6 +15,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error fetching courses:", error);
 				}
 			},
+
 			addCourses: async (courseData) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/courses`, {
@@ -42,6 +31,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error adding course:", error);
 				}
 			},
+
 			editCourse: async (courseId, updatedCourseData) => {
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/courses/${courseId}`, {
@@ -57,6 +47,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error updating course:", error);
 				}
 			},
+
 			deleteCourses: async (courseIds) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/courses/${courseIds}`, {
@@ -72,37 +63,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error deleting course:", error);
 				}
 			},
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
 
-			getMessage: async () => {
-				try {
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				} catch (error) {
-					console.log("Error loading message from backend", error)
-				}
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
+			reorderCourses: (dragIndex, hoverIndex) => {
+                const courses = [...getStore().courses];
+                const draggedCourse = courses[dragIndex];
+                courses.splice(dragIndex, 1);
+                courses.splice(hoverIndex, 0, draggedCourse);
+                setStore({ courses });
+                getActions().updateCoursesOrder(courses);
+            },
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			}
+            updateCoursesOrder: async (courses) => {
+                try {
+                    const resp = await fetch(`${process.env.BACKEND_URL}/api/courses/reorder`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(courses.map((course, index) => ({ id: course.id, order: index })))
+                    });
+                    if (!resp.ok) throw new Error('Failed to update course order');
+                } catch (error) {
+                    console.error("Error updating course order:", error);
+                }
+            },
 		}
 	};
 };

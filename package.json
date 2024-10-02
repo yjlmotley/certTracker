@@ -30,8 +30,8 @@
 		"@babel/core": "^7.16.0",
 		"@babel/plugin-proposal-class-properties": "^7.16.0",
 		"@babel/plugin-transform-runtime": "^7.16.4",
-		"@babel/preset-env": "^7.16.4",
-		"@babel/preset-react": "^7.16.0",
+		"@babel/preset-env": "^7.25.4",
+		"@babel/preset-react": "^7.24.7",
 		"@babel/runtime": "^7.16.3",
 		"babel-eslint": "^10.1.0",
 		"babel-loader": "^8.2.3",
@@ -74,9 +74,11 @@
 	},
 	"dependencies": {
 		"prop-types": "^15.6.1",
-		"react": "^16.8.4",
+		"react": "^17.0.2",
 		"react-bootstrap-icons": "^1.11.4",
-		"react-dom": "^16.8.4",
+		"react-dnd": "^16.0.1",
+		"react-dnd-html5-backend": "^16.0.1",
+		"react-dom": "^17.0.2",
 		"react-polyfills": "0.0.1",
 		"react-router-dom": "^6.3.0"
 	}
