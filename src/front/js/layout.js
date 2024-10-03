@@ -7,11 +7,15 @@ import { BackendURL } from "./component/backendURL";
 
 import { Home } from "./pages/home";
 import injectContext from "./store/appContext";
+import { ForgotPassword } from "./pages/forgotPassword";
+import { ChangePassword } from "./pages/changePassword";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 
 import { CourseTracker } from "./pages/courseTracker";
+import SignUp from "./pages/signUp";
+import Login from "./pages/login";
 
 //create your first component
 const Layout = () => {
@@ -29,6 +33,10 @@ const Layout = () => {
                         <Navbar />
                         <Routes>
                             <Route element={<Home />} path="/" />
+                            <Route element={<SignUp />} path="/sign-up" />
+                            <Route element={<Login />} path="/login" />
+                            <Route element={<ForgotPassword />} path="/forgot-password" />
+                            <Route element={<ChangePassword />} path="/change-password" />
                             <Route element={<CourseTracker />} path="/course-tracker" />
                             <Route element={<h1>Not found!</h1>} />
                         </Routes>

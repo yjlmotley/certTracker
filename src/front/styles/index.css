@@ -1,3 +1,15 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+
+.signup-div .input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3), .signup-div .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}
+
+.forgot-password-div .input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3), .forgot-password-div .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}
+
+.login-div .input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3), .login-div .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}

@@ -5,6 +5,55 @@ const getState = ({ getStore, getActions, setStore }) => {
 			message: null,
 		},
 		actions: {
+			signUp: async (newUser) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/signup", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							email: newUser.email.toLowerCase(),
+							password: newUser.password
+						}),
+					})
+					console.log("response from signup:", response)
+					const data = await response.json();
+					if (!response.ok) {
+						alert(data.message);
+						return false
+					};
+					console.log(data);
+					return true;
+				} catch (error) {
+					// console.error("please try again later", error);
+					throw error
+				}
+
+			},
+
+			login: async (email, password) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/login", {
+						method: "POST",
+						body: JSON.stringify({
+							email: email.toLowerCase(),
+							password: password
+						}),
+						headers: { "Content-Type": "application/json" }
+					})
+					const data = await response.json();
+					if (response.status !== 200) {
+						alert(data.message);
+						return false
+					};
+
+					sessionStorage.setItem("token", data.token);
+					return true;
+				} catch (error) {
+					console.error("please try again later", error);
+					throw error;
+				}
+			},
+
 			getCourses: async () => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/courses`);
@@ -65,26 +114,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			reorderCourses: (dragIndex, hoverIndex) => {
-                const courses = [...getStore().courses];
-                const draggedCourse = courses[dragIndex];
-                courses.splice(dragIndex, 1);
-                courses.splice(hoverIndex, 0, draggedCourse);
-                setStore({ courses });
-                getActions().updateCoursesOrder(courses);
-            },
+				const courses = [...getStore().courses];
+				const draggedCourse = courses[dragIndex];
+				courses.splice(dragIndex, 1);
+				courses.splice(hoverIndex, 0, draggedCourse);
+				setStore({ courses });
+				getActions().updateCoursesOrder(courses);
+			},
 
-            updateCoursesOrder: async (courses) => {
-                try {
-                    const resp = await fetch(`${process.env.BACKEND_URL}/api/courses/reorder`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(courses.map((course, index) => ({ id: course.id, order: index })))
-                    });
-                    if (!resp.ok) throw new Error('Failed to update course order');
-                } catch (error) {
-                    console.error("Error updating course order:", error);
-                }
-            },
+			updateCoursesOrder: async (courses) => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/courses/reorder`, {
+						method: 'PUT',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(courses.map((course, index) => ({ id: course.id, order: index })))
+					});
+					if (!resp.ok) throw new Error('Failed to update course order');
+				} catch (error) {
+					console.error("Error updating course order:", error);
+				}
+			},
 		}
 	};
 };
