@@ -162,6 +162,8 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                                         name="exp_starting_date"
                                         value={courseFormData.exp_starting_date}
                                         onChange={handleCourseChange}
+                                        min="1000-01-01"
+                                        max="9999-12-31"
                                     />
                                     <label htmlFor="exp_starting_date">Expected Starting Date</label>
                                 </div>
@@ -174,6 +176,8 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                                         name="start_date"
                                         value={courseFormData.start_date}
                                         onChange={handleCourseChange}
+                                        min="1000-01-01"
+                                        max="9999-12-31"
                                     />
                                     <label htmlFor="start_date">Start Date</label>
                                 </div>
@@ -186,6 +190,8 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                                         name="due_date"
                                         value={courseFormData.due_date}
                                         onChange={handleCourseChange}
+                                        min="1000-01-01"
+                                        max="9999-12-31"
                                     />
                                     <label htmlFor="due_date">Due/ Completed Date</label>
                                 </div>
@@ -198,6 +204,8 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                                         name="expiration_date"
                                         value={courseFormData.expiration_date}
                                         onChange={handleCourseChange}
+                                        min="1000-01-01"
+                                        max="9999-12-31"
                                     />
                                     <label htmlFor="expiration_date">Expires</label>
                                 </div>
