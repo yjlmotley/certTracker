@@ -12,7 +12,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({
 							email: newUser.email.toLowerCase(),
-							password: newUser.password
+							password: newUser.password,
+							first_name: newUser.firstName,
+							last_name: newUser.lastName
 						}),
 					})
 					console.log("response from signup:", response)

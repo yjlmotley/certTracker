@@ -1,8 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Book, House, PersonCircle } from 'react-bootstrap-icons';
 
 export const Navbar = () => {
+	const navigate = useNavigate();
+
+	const handleLogout = () => {
+		sessionStorage.removeItem("token");
+		// alert("You have been successfully logged out");
+		navigate("/");
+	}
+
+	const isLoggedIn = !!sessionStorage.getItem("token");
+
 	return (
 		<nav className="navbar navbar-light bg-light mb-4">
 			<div className="container">
@@ -28,10 +38,17 @@ export const Navbar = () => {
 							</Link>
 						</li>
 					</ul>
-					<Link to="/login" className="btn btn-outline-primary">
-						<PersonCircle className="me-1" />
-						Login
-					</Link>
+					{isLoggedIn ? (
+						<button onClick={handleLogout} className="btn btn-outline-primary">
+							<PersonCircle className="me-1" />
+							Log Out
+						</button>
+					) : (
+						<Link to="/login" className="btn btn-outline-primary">
+							<PersonCircle className="me-1" />
+							Login
+						</Link>
+					)}
 				</div>
 			</div>
 		</nav>

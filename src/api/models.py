@@ -9,24 +9,24 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(120), unique=True, nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(256), nullable=False)
-    is_active = db.Column(db.Boolean(), unique=False, nullable=False)
     last_active = db.Column(db.DateTime(), nullable=True)
 
     courses = db.relationship('Course', backref='user', lazy=True, cascade='all, delete-orphan')
     certifications = db.relationship('Certification', backref='user', lazy=True, cascade='all, delete-orphan')
 
     def __repr__(self):
-        return f'<User {self.username}>'
+        return f'<User {self.email}>'
 
     def serialize(self):
         return {
             "id": self.id,
-            "username": self.username,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
             "email": self.email,
-            "is_active": self.is_active,
             "last_active": self.last_active
         }
 
@@ -78,7 +78,11 @@ class Course(db.Model):
             "expiration_date": self.expiration_date,
             "exp_timeframe": self.exp_timeframe,
             "other_details": self.other_details,
-            "order": self.order
+            "order": self.order,
+            # Serialize related user info
+            "user_id": self.user.id if self.user else None,
+            "user_first_name": self.user.first_name if self.user else None,
+            "user_last_name": self.user.last_name if self.user else None
         }
 
 class Certification(db.Model):
@@ -130,5 +134,9 @@ class Certification(db.Model):
             "expiration_date": self.expiration_date,
             "exp_timeframe": self.exp_timeframe,
             "other_details": self.other_details,
-            "order": self.order
+            "order": self.order,
+            # Serialize related user info
+            "user_id": self.user.id if self.user else None,
+            "user_first_name": self.user.first_name if self.user else None,
+            "user_last_name": self.user.last_name if self.user else None
         }

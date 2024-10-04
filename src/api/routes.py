@@ -28,6 +28,8 @@ CORS(api)
 def sign_up():
     email = request.json.get("email")
     password = request.json.get("password")
+    first_name = request.json.get("first_name")
+    last_name = request.json.get("last_name")
 
     user = User.query.filter_by(email = email).one_or_none()
     if user:
@@ -35,7 +37,9 @@ def sign_up():
 
     new_user = User(
        email = email,
-       password = generate_password_hash(password) 
+       password = generate_password_hash(password), 
+       first_name = first_name,
+       last_name = last_name
     )
     db.session.add(new_user)
     db.session.commit()
@@ -59,10 +63,14 @@ def login():
     
     if not check_password_hash(user.password, password):
         return jsonify({"message": "Incorrect password"}), 401
+
+     # Update last_active with the current UTC time
+    user.last_active = datetime.utcnow()
+    db.session.commit()
     
     access_token = create_access_token(
         identity = user.email,
-        expires_delta=timedelta(days=30)
+        expires_delta=timedelta(days=7)
     )
     return jsonify({"token": access_token}), 200
 
@@ -79,7 +87,7 @@ def forgot_password():
     token = jwt.encode({"email": email, "exp": expiration_time}, os.getenv("FLASK_APP_KEY"), algorithm="HS256")
 
     email_value=f"Click here to reset password.\n{os.getenv('FRONTEND_URL')}/forgot-password?token={token}"
-    send_email(email, email_value, "password recover: Koyo")
+    send_email(email, email_value, "Password Recovery: CertTracker")
     return jsonify({"message": "recovery email sent"}), 200
     
 

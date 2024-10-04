@@ -1,29 +1,41 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const { actions } = useContext(Context);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    firstName: "",
+    lastName: "",
+  });
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   }
 
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setUserData(prevState => ({
+      ...prevState,
+      [id]: value
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { password, confirmPassword } = userData;
     if (password !== confirmPassword) {
       alert("Passwords do not match");
       // return;
     } else {
-      const success = await actions.signUp({
-        email: email,
-        password: password
-      });
+      const success = await actions.signUp(userData);
       console.log(success)
       if (success) {
         alert("Signup successful! Please login.");
@@ -42,13 +54,35 @@ export default function SignUp() {
               <h2 className="text-center mb-4">Sign Up</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
+                  <label htmlFor="firstName" className="form-label">First Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="firstName"
+                    value={userData.firstName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="lastName" className="form-label">Last Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="lastName"
+                    value={userData.lastName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
                   <label htmlFor="email" className="form-label">Email address</label>
                   <input
                     type="email"
                     className="form-control"
                     id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={userData.email}
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -59,13 +93,13 @@ export default function SignUp() {
                       type={showPassword ? "text" : "password"}
                       className="form-control"
                       id="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      value={userData.password}
+                      onChange={handleChange}
                       required
                     />
                     <i
                       className={`position-absolute top-50 end-0 translate-middle-y me-3 text-muted fa-regular ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
-                      style={{ cursor: "pointer"}}
+                      style={{ cursor: "pointer" }}
                       onClick={togglePasswordVisibility}
                     />
                   </div>
@@ -77,8 +111,8 @@ export default function SignUp() {
                       type={showPassword ? "text" : "password"}
                       className="form-control"
                       id="confirmPassword"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      value={userData.confirmPassword}
+                      onChange={handleChange}
                       required
                     />
                     <i
