@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import Course from "../component/Course.jsx";
 import CourseForm from "../component/CourseForm.jsx";
 
+
 export const CourseTracker = () => {
     const { store, actions } = useContext(Context);
     const [editMode, setEditMode] = useState(false);
@@ -10,6 +11,8 @@ export const CourseTracker = () => {
 
     useEffect(() => {
         actions.getCourses();
+        console.log(store.currentUser)
+        console.log(store.token)
     }, []);
 
     const handleEditClick = (course) => {
@@ -33,8 +36,14 @@ export const CourseTracker = () => {
         actions.reorderCourses(dragIndex, hoverIndex);
     };
 
+    // console.log("Current User in CourseTracker:", store.currentUser);
+
     return (
         <div className="container mt-5">
+            <h3>
+                {store.currentUser ? `Hello ${store.currentUser.first_name}` : "placeholder for course.id.user.first_name+last_name"}
+            </h3>
+            {/* TODO: Change this so that when you look at this link and you're not signed in, you see their first and last name (plus their coursesr) */}
             <h1 className="text-center mb-4">Course Tracker</h1>
 
             <div className="mb-4 text-center">

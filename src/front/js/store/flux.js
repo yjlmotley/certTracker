@@ -1,10 +1,27 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+			currentUser: null,
+			token: sessionStorage.getItem("token"),
 			courses: [],
-			message: null,
+			message: null,  // Optional: use for setting error/success messages
 		},
 		actions: {
+			checkFieldAvailability: async (field, value) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/check-availability", {
+						method: "POST",
+						headers: { "Content-Type": "application/json " },
+						body: JSON.stringify({ field, value }),
+					});
+					const data = await response.json();
+					return data.isAvailable;
+				} catch (error) {
+					console.error("Error checking field availability:", error);
+					throw error;
+				}
+			},
+
 			signUp: async (newUser) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/signup", {
@@ -14,7 +31,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 							email: newUser.email.toLowerCase(),
 							password: newUser.password,
 							first_name: newUser.firstName,
-							last_name: newUser.lastName
+							last_name: newUser.lastName,
+							username: newUser.username,
 						}),
 					})
 					console.log("response from signup:", response)
@@ -49,6 +67,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					};
 
 					sessionStorage.setItem("token", data.token);
+					console.log("storing user data into store.currentUser after login:", data.user);
+					setStore({ currentUser: data.user });
 					return true;
 				} catch (error) {
 					console.error("please try again later", error);
@@ -71,7 +91,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/courses`, {
 						method: 'POST',
-						headers: { 'Content-Type': 'application/json' },
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${getStore().token}`
+						},
 						body: JSON.stringify(courseData)
 					});
 					if (!resp.ok) { throw new Error(`Failed to add course: ${resp.status} - ${resp.statusText}`); }
@@ -89,6 +112,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						method: "PUT",
 						headers: {
 							"Content-Type": "application/json",
+							Authorization: `Bearer ${getStore().token}`
 						},
 						body: JSON.stringify(updatedCourseData),
 					});
@@ -103,7 +127,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/courses/${courseIds}`, {
 						method: 'DELETE',
-						headers: { 'Content-Type': 'application/json' },
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${getStore().token}`
+						},
 						body: JSON.stringify(courseIds)
 					});
 					if (!resp.ok) { throw new Error(`Failed to delete course: ${resp.status} - ${resp.statusText}`); }

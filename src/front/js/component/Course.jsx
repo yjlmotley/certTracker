@@ -59,7 +59,7 @@ const Course = ({ course, editMode, handleEditClick, handleDeleteCourse, index, 
                 <h5 className="d-flex align-items-center m-0">
                     <span className="me-2">{course.name}</span>
                     <span className="badge bg-secondary me-2">{course.number}</span>
-                    {course.exp_timeframe && (
+                    {!course.is_completed && course.exp_timeframe && (
                         <span className="text-muted fs-6 fw-normal">
                             ({course.exp_timeframe})
                         </span>

@@ -11,6 +11,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
+    username = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(256), nullable=False)
     last_active = db.Column(db.DateTime(), nullable=True)
@@ -26,6 +27,7 @@ class User(db.Model):
             "id": self.id,
             "first_name": self.first_name,
             "last_name": self.last_name,
+            "username": self.username,
             "email": self.email,
             "last_active": self.last_active
         }
@@ -45,8 +47,9 @@ class Course(db.Model):
     exp_timeframe= db.Column(db.String(50), nullable=True)
     other_details= db.Column(db.String(5000), nullable=True)
 
-    def __init__(self, name, order=None, is_completed=False, number=None, exp_starting_date=None, start_date=None, due_date=None, expiration_date=None, exp_timeframe=None, other_details=None):
+    def __init__(self, name, user_id, order=None, is_completed=False, number=None, exp_starting_date=None, start_date=None, due_date=None, expiration_date=None, exp_timeframe=None, other_details=None):
         self.name = name
+        self.user_id = user_id
         self.is_completed = is_completed
         self.number = number
         self.exp_starting_date = exp_starting_date
@@ -82,7 +85,8 @@ class Course(db.Model):
             # Serialize related user info
             "user_id": self.user.id if self.user else None,
             "user_first_name": self.user.first_name if self.user else None,
-            "user_last_name": self.user.last_name if self.user else None
+            "user_last_name": self.user.last_name if self.user else None,
+            "username": self.user.username if self.user else None,
         }
 
 class Certification(db.Model):
@@ -101,8 +105,9 @@ class Certification(db.Model):
     exp_timeframe= db.Column(db.String(50), nullable=True)
     other_details= db.Column(db.String(5000), nullable=True)
 
-    def __init__(self, name, order=None, is_completed=False, number=None, exp_starting_date=None, start_date=None, due_date=None, expiration_date=None, exp_timeframe=None, other_details=None):
+    def __init__(self, name, user_id, order=None, is_completed=False, number=None, exp_starting_date=None, start_date=None, due_date=None, expiration_date=None, exp_timeframe=None, other_details=None):
         self.name = name
+        self.user_id = user_id
         self.is_completed = is_completed
         self.number = number
         self.exp_starting_date = exp_starting_date
@@ -138,5 +143,6 @@ class Certification(db.Model):
             # Serialize related user info
             "user_id": self.user.id if self.user else None,
             "user_first_name": self.user.first_name if self.user else None,
-            "user_last_name": self.user.last_name if self.user else None
+            "user_last_name": self.user.last_name if self.user else None,
+            "username": self.user.username if self.user else None,
         }

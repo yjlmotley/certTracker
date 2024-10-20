@@ -22,7 +22,7 @@ export default function Login() {
     }
 
     return (
-        <div className="container mt-5 login-div">
+        <div className="container mt-5 login-div auth">
             <div className="row justify-content-center">
                 <div className="col-md-6">
                     <div className="card shadow">
@@ -42,7 +42,8 @@ export default function Login() {
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="password" className="form-label">Password</label>
-                                    <div className="input-group">
+                                    <div className="input-group mb-1">
+                                        {/* <div className="position-relative"> */}
                                         <input
                                             type={showPassword ? "text" : "password"}
                                             className="form-control"
@@ -53,7 +54,7 @@ export default function Login() {
                                         />
                                         <i
                                             className={`position-absolute top-50 end-0 translate-middle-y me-3 text-muted fa-regular ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
-                                            style={{ cursor: "pointer" }}
+                                            style={{ cursor: "pointer", pointerEvents: "auto", zIndex: 10 }}
                                             onClick={togglePasswordVisibility}
                                         />
                                     </div>

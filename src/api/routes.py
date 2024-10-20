@@ -6,7 +6,7 @@ from api.models import db, User, Course
 from api.send_email import send_email
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 import jwt
@@ -22,7 +22,18 @@ CORS(api)
 
 # ---------------------------------- AUTHENTICATION ROUTES ----------------------------------
 # ---------------------------------- AUTHENTICATION ROUTES ----------------------------------
-# ---------------------------------- AUTHENTICATION ROUTES ----------------------------------
+
+@api.route('/check-availability', methods=['POST'])
+def check_availability():
+    field = request.json.get('field')
+    value = request.json.get('value')
+
+    if field not in ['username', 'email']:
+        return jsonify({"error": "Invalid field"}), 400
+    
+    user = User.query.filter(getattr(User, field) == value).first()
+
+    return jsonify({"isAvailable": user is None}), 200
 
 @api.route('/signup', methods=['POST'])
 def sign_up():
@@ -30,16 +41,26 @@ def sign_up():
     password = request.json.get("password")
     first_name = request.json.get("first_name")
     last_name = request.json.get("last_name")
+    username = request.json.get("username")
+
+    errors = {}
 
     user = User.query.filter_by(email = email).one_or_none()
     if user:
-        return jsonify({"message": "User already exists"}), 400
+        errors['email'] = "User with this email already exists."
+    user = User.query.filter_by(username = username).one_or_none()
+    if user:
+        errors['username'] = "Username already exists. Please choose another."
+
+    if errors:
+        return jsonify({"error": errors}), 400
 
     new_user = User(
        email = email,
        password = generate_password_hash(password), 
        first_name = first_name,
-       last_name = last_name
+       last_name = last_name,
+       username = username,
     )
     db.session.add(new_user)
     db.session.commit()
@@ -69,10 +90,14 @@ def login():
     db.session.commit()
     
     access_token = create_access_token(
-        identity = user.email,
+        identity = user.id,
         expires_delta=timedelta(days=7)
     )
-    return jsonify({"token": access_token}), 200
+    print("Access Token:", access_token)
+    return jsonify({
+        "token": access_token,
+        "user": user.serialize()
+    }), 200
 
 
 @api.route("/forgot-password", methods=["POST"])
@@ -118,7 +143,6 @@ def reset_password(token):
 
 # ---------------------------------- COURSES ROUTES ----------------------------------
 # ---------------------------------- COURSES ROUTES ----------------------------------
-# ---------------------------------- COURSES ROUTES ----------------------------------
 @api.route('/courses', methods=['GET'])
 def get_courses():
     try:
@@ -127,15 +151,29 @@ def get_courses():
     except Exception as e:
         return jsonify({"error": str(e)}), 500 # Internal Server Error
 
-# Route to add a new course (assuming data is sent in JSON format)
+
 @api.route('/courses', methods=['POST'])
+@jwt_required() # Require JWT token for this route
 def add_course():
     course_data = request.get_json()
-
     # Basic validation check
     if not course_data:
         return jsonify({"error": "Missing course data"}), 400 # Bad Request status code
 
+    # Retrieve the user ID from the JWT token
+    current_user = get_jwt_identity()
+    if current_user is None:
+        return jsonify({"message": "User not authenticated"}), 401
+
+    print("Current User:", current_user)
+    print("Current User Type:", type(current_user))
+
+    user = User.query.get(current_user)
+    if user is None:
+        return jsonify({"message": "user not found"}), 404
+    
+    token_payload = get_jwt()
+    print("Token Payload:", token_payload)
 
     new_course = Course(
         is_completed=course_data['is_completed'],
@@ -147,7 +185,8 @@ def add_course():
         due_date=course_data['due_date'],
         expiration_date=course_data['expiration_date'],        
         exp_timeframe=course_data['exp_timeframe'],        
-        other_details=course_data['other_details']        
+        other_details=course_data['other_details'],
+        user_id=user.id
     )
 
     db.session.add(new_course)
@@ -156,11 +195,16 @@ def add_course():
     return jsonify(new_course.serialize()), 201 # Created status code
 
 @api.route('/courses/<int:course_id>', methods=['PUT'])
+@jwt_required()
 def update_course(course_id):
     course_data = request.get_json()
     course = Course.query.get(course_id)
     if not course:
         return jsonify({'error': 'Course not found'}), 404
+
+    user_id = get_jwt_identity()
+    if course.user_id != user_id:
+        return jsonify({"error": "You're not authorized to edit this course."}), 401
 
     course.is_completed = course_data['is_completed']
     course.number = course_data['number']
@@ -192,11 +236,16 @@ def reorder_courses():
 
 # Route to delete a course by ID (assuming course ID is in the URL)
 @api.route('/courses/<int:course_id>', methods=['DELETE'])
+@jwt_required()
 def delete_course(course_id):
     course = Course.query.get(course_id) 
     if not course:
         return jsonify({'error': 'Course not found'}), 404
+    
+    user_id = get_jwt_identity()
+    if course.user_id != user_id:
+        return jsonify({"error": "You're not authorized to delete this course."})
 
     db.session.delete(course)
     db.session.commit()
-    return jsonify({'msg': 'Course deleted'}), 204 # No Content status code
+    return jsonify({'msg': 'Course deleted'}), 204 # No Content status code 

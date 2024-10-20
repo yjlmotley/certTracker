@@ -49,7 +49,7 @@ export const ChangePassword = () => {
 
     // terniary if no token show email, if token show 2 password inputs. set up an error
     return (
-        <div className="container mt-5 forgot-password-div">
+        <div className="container mt-5 forgot-password-div auth">
             <div className="row justify-content-center">
                 <div className="col-md-6">
                     <div className="card shadow">
@@ -73,7 +73,7 @@ export const ChangePassword = () => {
                                         />
                                         <i
                                             className={`position-absolute top-50 end-0 translate-middle-y me-3 text-muted fa-regular ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
-                                            style={{ cursor: "pointer" }}
+                                            style={{ cursor: "pointer", pointerEvents: "auto", zIndex: 10 }}
                                             onClick={togglePasswordVisibility}
                                         />
                                     </div>
@@ -94,7 +94,7 @@ export const ChangePassword = () => {
                                         />
                                         <i
                                             className={`position-absolute top-50 end-0 translate-middle-y me-3 text-muted fa-regular ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
-                                            style={{ cursor: "pointer" }}
+                                            style={{ cursor: "pointer", pointerEvents: "auto", zIndex: 10 }}
                                             onClick={togglePasswordVisibility}
                                         />
                                     </div>
