@@ -20,7 +20,7 @@ class User(db.Model):
     certifications = db.relationship('Certification', backref='user', lazy=True, cascade='all, delete-orphan')
 
     def __repr__(self):
-        return f'<User {self.email}>'
+        return f'<User {self.username}>'
 
     def serialize(self):
         return {

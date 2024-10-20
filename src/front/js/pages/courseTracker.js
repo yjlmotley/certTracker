@@ -12,7 +12,7 @@ export const CourseTracker = () => {
     useEffect(() => {
         actions.getCourses();
         console.log(store.currentUser)
-        console.log(store.token)
+        // console.log(store.token)
     }, []);
 
     const handleEditClick = (course) => {

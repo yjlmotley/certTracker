@@ -1,9 +1,10 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			currentUser: null,
+			currentUser: JSON.parse(sessionStorage.getItem("currentUser")) || null,
 			token: sessionStorage.getItem("token"),
 			courses: [],
+			certifications: [],
 			message: null,  // Optional: use for setting error/success messages
 		},
 		actions: {
@@ -67,13 +68,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 					};
 
 					sessionStorage.setItem("token", data.token);
+					sessionStorage.setItem("currentUser", JSON.stringify(data.user));
 					console.log("storing user data into store.currentUser after login:", data.user);
-					setStore({ currentUser: data.user });
+					setStore({ currentUser: data.user, token: data.token });
 					return true;
 				} catch (error) {
 					console.error("please try again later", error);
 					throw error;
 				}
+			},
+
+			logout: () => {
+				sessionStorage.removeItem("token");
+				sessionStorage.removeItem("currentUser");
+				setStore({ currentUser: null, token: null });
 			},
 
 			getCourses: async () => {

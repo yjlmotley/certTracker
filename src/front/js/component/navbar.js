@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
 import { Book, House, PersonCircle } from 'react-bootstrap-icons';
 
 export const Navbar = () => {
+	const { actions } = useContext(Context);
 	const navigate = useNavigate();
 
 	const handleLogout = () => {
-		sessionStorage.removeItem("token");
-		// alert("You have been successfully logged out");
+		actions.logout();
 		console.log("User has been succesfully logged out");
 		navigate("/");
 	}

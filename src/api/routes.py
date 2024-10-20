@@ -43,17 +43,10 @@ def sign_up():
     last_name = request.json.get("last_name")
     username = request.json.get("username")
 
-    errors = {}
-
-    user = User.query.filter_by(email = email).one_or_none()
-    if user:
-        errors['email'] = "User with this email already exists."
-    user = User.query.filter_by(username = username).one_or_none()
-    if user:
-        errors['username'] = "Username already exists. Please choose another."
-
-    if errors:
-        return jsonify({"error": errors}), 400
+    if User.query.filter_by(email=email).first():
+        return jsonify({"error": "Email already exists"}), 400
+    if User.query.filter_by(username=username).first():
+        return jsonify({"error": "Username already exists"}), 400
 
     new_user = User(
        email = email,
