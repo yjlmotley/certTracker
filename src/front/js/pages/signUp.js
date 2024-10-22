@@ -191,7 +191,7 @@ export default function SignUp() {
                   {errors.confirmPassword && renderError(errors.confirmPassword)}
                 </div>
                 {errors.general && <div className="alert alert-danger" role="alert">{renderError(errors.general)}</div>}
-                <button type="submit" className="btn btn-primary w-100">Sign Up</button>
+                <button type="submit" className="btn btn-dark w-100">Sign Up</button>
               </form>
             </div>
           </div>

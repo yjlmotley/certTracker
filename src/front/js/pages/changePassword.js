@@ -107,7 +107,7 @@ export const ChangePassword = () => {
                                     </div>
                                 }
 
-                                <button type="submit" className="btn btn-primary w-100">Submit</button>
+                                <button type="submit" className="btn btn-dark w-100">Submit</button>
                                 <Link className="" to="/signup"><p className='text-center mt-4'>Click here to sign up</p></Link>
                             </form>
                         </div>

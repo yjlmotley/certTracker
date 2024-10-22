@@ -33,7 +33,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							password: newUser.password,
 							first_name: newUser.firstName,
 							last_name: newUser.lastName,
-							username: newUser.username,
+							username: newUser.username.toLowerCase(),
 						}),
 					})
 					console.log("response from signup:", response)
@@ -51,12 +51,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			},
 
-			login: async (email, password) => {
+			login: async (loginIdentifier, password) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/login", {
 						method: "POST",
 						body: JSON.stringify({
-							email: email.toLowerCase(),
+							loginIdentifier: loginIdentifier.toLowerCase(),
 							password: password
 						}),
 						headers: { "Content-Type": "application/json" }

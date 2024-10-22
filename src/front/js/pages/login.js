@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 
 export default function Login() {
-    const [email, setEmail] = useState("");
+    const [loginIdentifier, setLoginIdentifier] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const { actions } = useContext(Context);
@@ -17,7 +17,7 @@ export default function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const success = await actions.login(email, password)
+        const success = await actions.login(loginIdentifier, password)
         if (success) navigate("/");
     }
 
@@ -30,13 +30,13 @@ export default function Login() {
                             <h2 className="text-center mb-4">Login</h2>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">Email address</label>
+                                    <label htmlFor="loginIdentifier" className="form-label">Username/ Email</label>
                                     <input
-                                        type="email"
+                                        type="text"
                                         className="form-control"
-                                        id="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        id="loginIdentifier"
+                                        value={loginIdentifier}
+                                        onChange={(e) => setLoginIdentifier(e.target.value)}
                                         required
                                     />
                                 </div>
@@ -60,7 +60,7 @@ export default function Login() {
                                     </div>
                                     <Link to="/forgot-password">Forgot Password?</Link>
                                 </div>
-                                <button type="submit" className="btn btn-primary w-100">Login</button>
+                                <button type="submit" className="btn btn-dark w-100">Login</button>
                                 <Link to="/sign-up"><p className='text-center mt-4'>Click here to sign up</p></Link>
 
                             </form>

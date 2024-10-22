@@ -68,12 +68,17 @@ def sign_up():
 
 @api.route("/login", methods=["POST"])
 def login():
-    email = request.json.get("email")
+    login_identifier = request.json.get("loginIdentifier")
     password = request.json.get("password")
         
-    user = User.query.filter_by(email = email).one_or_none()
+    user = User.query.filter(
+        db.or_(
+            User.email == login_identifier,
+            User.username == login_identifier
+        )
+    ).one_or_none()
     if user is None:
-        return jsonify({"message": "Email does not exist"}), 404
+        return jsonify({"message": "No account found with that email or username"}), 404
     
     if not check_password_hash(user.password, password):
         return jsonify({"message": "Incorrect password"}), 401

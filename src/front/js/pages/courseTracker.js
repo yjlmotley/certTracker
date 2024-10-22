@@ -48,9 +48,10 @@ export const CourseTracker = () => {
 
             <div className="mb-4 text-center">
                 <button
-                    className={`btn ${editMode ? "btn-outline-secondary" : "btn-primary"}`}
+                    className={`btn ${editMode ? "btn-outline-secondary" : "btn-dark"}`}
                     onClick={toggleEditMode}
                 >
+                    <i className="fa-solid fa-pencil me-2"></i>
                     {editMode ? "Exit Edit Mode" : "Edit Courses"}
                 </button>
             </div>
