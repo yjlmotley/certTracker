@@ -143,14 +143,25 @@ def reset_password(token):
 
 # ---------------------------------- COURSES ROUTES ----------------------------------
 # ---------------------------------- COURSES ROUTES ----------------------------------
-@api.route('/courses', methods=['GET'])
-def get_courses():
+@api.route('/all-courses', methods=['GET'])
+def get_all_courses():
     try:
         courses = Course.query.all()
         return jsonify([course.serialize() for course in courses]), 200 # OK status code
     except Exception as e:
         return jsonify({"error": str(e)}), 500 # Internal Server Error
 
+@api.route('/<string:username>/courses', methods=['GET'])
+def get_courses(username):
+    try:
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+    
+        courses = Course.query.filter_by(user_id=user.id).all()  
+        return jsonify([course.serialize() for course in courses]), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @api.route('/courses', methods=['POST'])
 @jwt_required() # Require JWT token for this route

@@ -1,6 +1,7 @@
 TODOS: 
 
 - [ ] add password strength (min. 5 character with letters & numbers & username format (length & allowed characters))
+- [ ] add a print and a share link buttons on top right
 - [ ] fix/change footer (styling & content)
 - [ ] make the edit Courses button only show if the current_user_id matches the user for the page (figure out a way to show the link with courses for everyone [maybe route of page/courses/username])
 - [ ] ...then change the routes/flux for add/edit/delete so that you don't need any authentication (since the edit button will only show if you are signed in and the user for the course page)

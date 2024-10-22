@@ -10,7 +10,7 @@ export const AdminCourseTracker = () => {
     const [currentCourse, setCurrentCourse] = useState(null);
 
     useEffect(() => {
-        actions.getCourses();
+        actions.getAllCourses();
         console.log(store.currentUser)
         // console.log(store.token)
     }, []);
@@ -22,7 +22,7 @@ export const AdminCourseTracker = () => {
 
     const handleDeleteCourse = async (courseId) => {
         await actions.deleteCourses([courseId]);
-        await actions.getCourses();
+        await actions.getAllCourses();
     };
 
     const toggleEditMode = () => {
@@ -66,7 +66,7 @@ export const AdminCourseTracker = () => {
             )}
 
             <ul className="list-group">
-                {store.courses?.map((course, index) => (
+                {store.allCourses?.map((course, index) => (
                     <Course
                         key={course.id}
                         index={index}

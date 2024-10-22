@@ -3,11 +3,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			currentUser: JSON.parse(sessionStorage.getItem("currentUser")) || null,
 			token: sessionStorage.getItem("token"),
+			allCourses: [],
 			courses: [],
 			certifications: [],
 			message: null,  // Optional: use for setting error/success messages
 		},
 		actions: {
+			// -------------------------- authorization --------------------------
+			// -------------------------- authorization --------------------------
 			checkFieldAvailability: async (field, value) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/check-availability", {
@@ -84,14 +87,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ currentUser: null, token: null });
 			},
 
-			getCourses: async () => {
+			// -------------------------- courses --------------------------
+			// -------------------------- courses --------------------------
+			getAllCourses: async () => {
 				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}/api/courses`);
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/all-courses`);
 					const data = await resp.json();
-					setStore({ courses: data })
+					setStore({ allCourses: data })
 					console.log("courses set in store:", data);
 				} catch (error) {
 					console.error("Error fetching courses:", error);
+				}
+			},
+
+			getCourses: async (username) => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/${username}/courses`);
+					const data = await resp.json();
+					// if (!resp.ok) {
+					// 	throw new Error(data.error || 'Failed to fetch user courses');
+					// }
+					setStore({ courses: data });
+					console.log("courses set in store:", data);
+					// return data;
+				} catch (error) {
+					console.error("Error fetching courses:", error);
+					throw error;
 				}
 			},
 
@@ -125,7 +146,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify(updatedCourseData),
 					});
 					if (!response.ok) throw new Error('Failed to update course');
-					await getActions().getCourses();  // Refresh the courses after editing
+					const updatedCourse = await response.json();
+
+					// Update the courses array in the store
+					const courses = getStore().courses;
+					const updatedCourses = courses.map(course =>
+						course.id === courseId ? updatedCourse : course
+					);
+					setStore({ courses: updatedCourses });
+
+					return updatedCourse;
 				} catch (error) {
 					console.error("Error updating course:", error);
 				}

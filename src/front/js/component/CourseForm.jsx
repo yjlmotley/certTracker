@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Context } from "../store/appContext";
 import { PlusCircle, ArrowsExpand, X } from 'react-bootstrap-icons';
 
-const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) => {
+const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel, username }) => {
     const { actions } = useContext(Context);
     const [isMinimized, setIsMinimized] = useState(false);
     const [isNewTab, setIsNewTab] = useState(false);
@@ -54,7 +54,7 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
             await actions.addCourses(courseData);
         }
 
-        await actions.getCourses();
+        await actions.getCourses(username);
 
         setCurrentCourse(null);
         setCourseFormData({
@@ -107,9 +107,9 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                     <button className="btn btn-sm btn-outline-secondary me-2" onClick={toggleMinimize}>
                         {isMinimized ? <ArrowsExpand /> : <X />}
                     </button>
-                    <button className="btn btn-sm btn-outline-secondary" onClick={openInNewTab}>
+                    {/* <button className="btn btn-sm btn-outline-secondary" onClick={openInNewTab}>
                         <ArrowsExpand />
-                    </button>
+                    </button> */}
                 </div>
             </div>
             {!isMinimized && (
