@@ -70,8 +70,9 @@ export const CourseTracker = () => {
                 {store.currentUser && `Hello ${store.currentUser.first_name}`}
             </h3>
             <h1 className="text-center mb-4">
-                {isOwner && "Course Tracker"}
-                {!isOwner && store.courses?.length > 0 ? `${ownerInfo?.firstName} ${ownerInfo?.lastName}'s Courses` : "No Courses"}
+                {isOwner ? "Course Tracker" :
+                    store.courses?.length > 0 ? `${ownerInfo?.firstName} ${ownerInfo?.lastName}'s Courses` :
+                        "No Courses"}
             </h1>
 
             {isOwner && (

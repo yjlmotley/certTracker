@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { PencilSquare, Trash, CheckCircle, ThreeDotsVertical, UpDown } from 'react-bootstrap-icons';
+import { PencilSquare, Trash, CheckCircle, ThreeDotsVertical } from 'react-bootstrap-icons';
 import { useDrag, useDrop } from 'react-dnd';
 import reorderIcon from "../../img/reorder.png";
 
