@@ -48,8 +48,8 @@ export default function SignUp() {
       case 'username':
       case 'email':
         try {
-          const response = await actions.checkFieldAvailability(field, value);
-          if (!response.isAvailable) {
+          const isAvailable = await actions.checkFieldAvailability(field, value);
+          if (!isAvailable) {
             setErrors(prev => ({ ...prev, [field]: `An account with this ${field} already exists. Please try again.` }));
           }
         } catch (error) {

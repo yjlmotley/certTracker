@@ -31,8 +31,10 @@ def check_availability():
     if field not in ['username', 'email']:
         return jsonify({"error": "Invalid field"}), 400
     
+    # Use getattr to dynamically access either User.username or User.email depending on which field was passed
     user = User.query.filter(getattr(User, field) == value).first()
 
+    # Return true if no user was found (meaning the username/email is available)
     return jsonify({"isAvailable": user is None}), 200
 
 @api.route('/signup', methods=['POST'])

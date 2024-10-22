@@ -4,8 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Book, House, PersonCircle } from 'react-bootstrap-icons';
 
 export const Navbar = () => {
-	const { actions } = useContext(Context);
+	const { store, actions } = useContext(Context);
 	const navigate = useNavigate();
+	const username = store.currentUser?.username;
 
 	const handleLogout = () => {
 		actions.logout();
@@ -35,8 +36,14 @@ export const Navbar = () => {
 						</Link>
 						<Link to="/course-tracker" className="dropdown-item">
 							<Book className="me-1" />
-							Course Tracker
+							All courses
 						</Link>
+						{isLoggedIn && (
+							<Link to={`/${username}/course-tracker`} className="dropdown-item">
+								<Book className="me-1" />
+								Your Course Tracker
+							</Link>
+						)}
 					</ul>
 					{isLoggedIn ? (
 						<button onClick={handleLogout} className="btn btn-outline-dark">
