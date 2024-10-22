@@ -41,9 +41,8 @@ export const AdminCourseTracker = () => {
     return (
         <div className="container mt-5">
             <h3>
-                {store.currentUser ? `Hello ${store.currentUser.first_name}` : "placeholder for course.id.user.first_name+last_name"}
+                {store.currentUser && `Hello ${store.currentUser.first_name}`}
             </h3>
-            {/* TODO: Change this so that when you look at this link and you're not signed in, you see their first and last name (plus their coursesr) */}
             <h1 className="text-center mb-4">ADMIN: Course Tracker</h1>
 
             <div className="mb-4 text-center">

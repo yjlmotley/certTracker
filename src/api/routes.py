@@ -167,9 +167,8 @@ def get_courses(username):
 @jwt_required() # Require JWT token for this route
 def add_course():
     course_data = request.get_json()
-    # Basic validation check
     if not course_data:
-        return jsonify({"error": "Missing course data"}), 400 # Bad Request status code
+        return jsonify({"error": "Missing course data"}), 400
 
     # Retrieve the user ID from the JWT token
     current_user = get_jwt_identity()
@@ -184,7 +183,7 @@ def add_course():
         return jsonify({"message": "user not found"}), 404
     
     token_payload = get_jwt()
-    print("Token Payload:", token_payload)
+    # print("Token Payload:", token_payload)
 
     new_course = Course(
         is_completed=course_data['is_completed'],
