@@ -1,37 +1,61 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Context } from "../store/appContext";
+import { Link, useNavigate } from "react-router-dom";
 import { Book, House, PersonCircle } from 'react-bootstrap-icons';
 
 export const Navbar = () => {
+	const { store, actions } = useContext(Context);
+	const navigate = useNavigate();
+	const username = store.currentUser?.username;
+
+	const handleLogout = () => {
+		actions.logout();
+		console.log("User has been succesfully logged out");
+		navigate("/");
+	}
+
+	const isLoggedIn = !!sessionStorage.getItem("token");
+
 	return (
 		<nav className="navbar navbar-light bg-light mb-4">
+			{/* // <nav className="navbar mb-4" style={{ backgroundColor: "#E0DCDC" }}> */}
+			{/* <nav className="navbar navbar-light mb-4" style={{ backgroundColor: "#D8D8D8" }}> */}
 			<div className="container">
 				<Link to="/" className="navbar-brand">
 					<Book className="me-2" />
-					CourseKeeper
+					Cert Tracker
 				</Link>
-				<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<span className="navbar-toggler-icon"></span>
-				</button>
-				<div className="collapse navbar-collapse" id="navbarNav">
-					<ul className="navbar-nav me-auto">
-						<li className="nav-item">
-							<Link to="/" className="nav-link">
-								<House className="me-1" />
-								Home
-							</Link>
-						</li>
-						<li className="nav-item">
-							<Link to="/course-tracker" className="nav-link">
+				<div className="ms-auto dropdown">
+					<a className="btn btn-outline-dark me-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i className="fa-solid fa-bars"></i>
+					</a>
+					<ul className="dropdown-menu">
+						<Link to="/" className="dropdown-item">
+							<House className="me-1" />
+							Home
+						</Link>
+						<Link to="/admin-course-tracker" className="dropdown-item">
+							<Book className="me-1" />
+							All courses
+						</Link>
+						{isLoggedIn && (
+							<Link to={`/${username}/course-tracker`} className="dropdown-item">
 								<Book className="me-1" />
-								Course Tracker
+								Your Course Tracker
 							</Link>
-						</li>
+						)}
 					</ul>
-					<Link to="/login" className="btn btn-outline-primary">
-						<PersonCircle className="me-1" />
-						Login
-					</Link>
+					{isLoggedIn ? (
+						<button onClick={handleLogout} className="btn btn-outline-dark">
+							<PersonCircle className="me-1" />
+							Log Out
+						</button>
+					) : (
+						<Link to="/login" className="btn btn-outline-dark">
+							<PersonCircle className="me-1" />
+							Login
+						</Link>
+					)}
 				</div>
 			</div>
 		</nav>

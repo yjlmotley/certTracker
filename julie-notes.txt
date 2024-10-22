@@ -1,4 +1,12 @@
 TODOS: 
+
+- [ ] add password strength (min. 5 character with letters & numbers & username format (length & allowed characters))
+- [ ] add a print and a share link buttons on top right
+- [ ] settings button to edit Profile and info
+- [ ] fix/change footer (styling & content)
+- [ ] make the edit Courses button only show if the current_user_id matches the user for the page (figure out a way to show the link with courses for everyone [maybe route of page/courses/username])
+- [ ] ...then change the routes/flux for add/edit/delete so that you don't need any authentication (since the edit button will only show if you are signed in and the user for the course page)
+
 - [ ] for the date part, make sure that you're not allowed to put in year past 9999 (date bug)
 - [ ] make the courses sortable by expected start date, start date, due date, by course number, course number, maybe a custom option so the users can move it around as needed
 - [ ] when editing or adding a new course finishes, I want the page to go back to the top of the screen possibly
@@ -12,13 +20,37 @@ you'll probably have to export/import Modal for the course/project form)
 - [ ] makes you turn the addBlock off and refresh to see the page (put little adds - not too much)
 - [ ] add an expires_date (course and/or certs)
 
+TODOS:
+- [ ] Redesign the signup/login/forgot password
+- [ ] Create a contact us
+- [ ] Instead of sending jwt token to edit to match the user - change the logic so you can only see the edit mode, if the user_id matches?? (then you would need to adjust the logic to the flux and routes as well but the code would be simpler... just a thought...)
+
+- [ ] add a image field (using cloudinary) (maybe a button you hover over: once you hoverd, you see an img link that opens in a new tab &/or the description showing (that you could copy & paste as well))
+- [ ] add an other field (for link to cert or something along those lines - maybe check LinkedIn for ideas?)
+- [ ] add a little button on the Course so that if you hover over it, you can see the details (and or a modal) for the course
+
+- [ ] be able to duplicate a course into a new one before hitting the add course button (will have to add the course after being duplicated)
 - [ ] be able to radio check what you what to see 
 or...
 - [ ] when is_finished, it shows started & finished but when it's not, it shows expected_start_date, (start_date), due date
 
 
 - [ ] bug checks: max characters check/alerts
+- [ ] I want to see the eyeballs even when the field/input is active
 
+
+-------- brain storming --------
+* have them also sign in with a unique username (required)
+    * then attach a username with (user) with the courses & certifications
+
+    * they can also sign in with their username &/or email
+
+    * then the link will always work like this
+        *hosting.com/course-tracker/username
+        or
+        *hosting.com/cert-tracker/username
+
+* You will only be able to see the edit courses button if the logged in user_id matches the user_id of the courses
 
 -------- installs needed ----------
 * npm install react-dnd react-dnd-html5-backend

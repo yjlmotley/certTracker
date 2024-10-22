@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Context } from "../store/appContext";
 import { PlusCircle, ArrowsExpand, X } from 'react-bootstrap-icons';
 
-const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) => {
+const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel, username }) => {
     const { actions } = useContext(Context);
     const [isMinimized, setIsMinimized] = useState(false);
     const [isNewTab, setIsNewTab] = useState(false);
@@ -36,7 +36,8 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
         setCourseFormData({ ...courseFormData, [name]: type === 'checkbox' ? checked : value });
     };
 
-    const handleAddCourse = async () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         const { exp_starting_date, start_date, due_date, expiration_date } = courseFormData;
 
         const courseData = {
@@ -53,7 +54,7 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
             await actions.addCourses(courseData);
         }
 
-        await actions.getCourses();
+        await actions.getCourses(username);
 
         setCurrentCourse(null);
         setCourseFormData({
@@ -106,14 +107,14 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                     <button className="btn btn-sm btn-outline-secondary me-2" onClick={toggleMinimize}>
                         {isMinimized ? <ArrowsExpand /> : <X />}
                     </button>
-                    <button className="btn btn-sm btn-outline-secondary" onClick={openInNewTab}>
+                    {/* <button className="btn btn-sm btn-outline-secondary" onClick={openInNewTab}>
                         <ArrowsExpand />
-                    </button>
+                    </button> */}
                 </div>
             </div>
             {!isMinimized && (
                 <div className="card-body">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="col-md-6 d-flex flex-column justify-content-center">
                                 <div className="form-check mb-3">
@@ -148,6 +149,7 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                                         name="name"
                                         value={courseFormData.name}
                                         onChange={handleCourseChange}
+                                        required
                                     />
                                     <label htmlFor="name">Course Name</label>
                                 </div>
@@ -162,6 +164,8 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                                         name="exp_starting_date"
                                         value={courseFormData.exp_starting_date}
                                         onChange={handleCourseChange}
+                                        min="1000-01-01"
+                                        max="9999-12-31"
                                     />
                                     <label htmlFor="exp_starting_date">Expected Starting Date</label>
                                 </div>
@@ -174,6 +178,8 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                                         name="start_date"
                                         value={courseFormData.start_date}
                                         onChange={handleCourseChange}
+                                        min="1000-01-01"
+                                        max="9999-12-31"
                                     />
                                     <label htmlFor="start_date">Start Date</label>
                                 </div>
@@ -186,6 +192,8 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                                         name="due_date"
                                         value={courseFormData.due_date}
                                         onChange={handleCourseChange}
+                                        min="1000-01-01"
+                                        max="9999-12-31"
                                     />
                                     <label htmlFor="due_date">Due/ Completed Date</label>
                                 </div>
@@ -198,6 +206,8 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                                         name="expiration_date"
                                         value={courseFormData.expiration_date}
                                         onChange={handleCourseChange}
+                                        min="1000-01-01"
+                                        max="9999-12-31"
                                     />
                                     <label htmlFor="expiration_date">Expires</label>
                                 </div>
@@ -227,7 +237,7 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel }) 
                             />
                             <label htmlFor="other_details">Other Details</label>
                         </div>
-                        <button className="btn btn-success" type="button" onClick={handleAddCourse}>
+                        <button className="btn btn-success" type="submit">
                             {!currentCourse && <PlusCircle className="me-2" />}
                             {!currentCourse ? "Add Course" : "Update Course"}
                         </button>

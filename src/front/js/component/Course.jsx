@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
-import { PencilSquare, Trash, CheckCircle, ThreeDotsVertical } from 'react-bootstrap-icons';
+import { PencilSquare, Trash, CheckCircle, ThreeDotsVertical, UpDown } from 'react-bootstrap-icons';
 import { useDrag, useDrop } from 'react-dnd';
+import reorderIcon from "../../img/reorder.png";
+
 
 const Course = ({ course, editMode, handleEditClick, handleDeleteCourse, index, handleReorder }) => {
     const ref = useRef(null);
@@ -52,14 +54,23 @@ const Course = ({ course, editMode, handleEditClick, handleDeleteCourse, index, 
         <li ref={ref} key={course.id} className="list-group-item d-flex align-items-center" style={{ opacity: isDragging ? 0.5 : 1 }}>
             {editMode && (
                 <div className="me-3 d-flex align-items-center">
-                    <ThreeDotsVertical style={{ cursor: 'move' }} />
+                    {/* <ThreeDotsVertical style={{ cursor: 'move' }} /> */}
+                    <img
+                        src={reorderIcon}
+                        alt="reorder"
+                        style={{
+                            cursor: 'move',
+                            width: '16px',
+                            height: '16px'
+                        }}
+                    />
                 </div>
             )}
             <div>
                 <h5 className="d-flex align-items-center m-0">
                     <span className="me-2">{course.name}</span>
                     <span className="badge bg-secondary me-2">{course.number}</span>
-                    {course.exp_timeframe && (
+                    {!course.is_completed && course.exp_timeframe && (
                         <span className="text-muted fs-6 fw-normal">
                             ({course.exp_timeframe})
                         </span>
