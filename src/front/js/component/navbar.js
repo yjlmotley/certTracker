@@ -34,7 +34,7 @@ export const Navbar = () => {
 							<House className="me-1" />
 							Home
 						</Link>
-						<Link to="/course-tracker" className="dropdown-item">
+						<Link to="/admin-course-tracker" className="dropdown-item">
 							<Book className="me-1" />
 							All courses
 						</Link>
