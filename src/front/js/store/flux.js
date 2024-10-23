@@ -201,6 +201,121 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error updating course order:", error);
 				}
 			},
+
+			// -------------------------- certifications --------------------------
+			// -------------------------- certifications --------------------------
+			getAllCertifications: async () => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/all-certifications`);
+					const data = await resp.json();
+					setStore({ allCertifications: data })
+					console.log("certifications set in store:", data);
+				} catch (error) {
+					console.error("Error fetching certifications:", error);
+				}
+			},
+
+			getCertifications: async (username) => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/${username}/certifications`);
+					const data = await resp.json();
+					// if (!resp.ok) {
+					// 	throw new Error(data.error || 'Failed to fetch user certifications');
+					// }
+					setStore({ certifications: data });
+					console.log("certifications set in store:", data);
+					// return data;
+				} catch (error) {
+					console.error("Error fetching certifications:", error);
+					throw error;
+				}
+			},
+
+			addCertifications: async (certificationData) => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/certifications`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${getStore().token}`
+						},
+						body: JSON.stringify(certificationData)
+					});
+					if (!resp.ok) { throw new Error(`Failed to add certification: ${resp.status} - ${resp.statusText}`); }
+					const newCertification = await resp.json();
+					setStore({ certifications: [...getStore().certifications, newCertification] });
+					// alert("Your certification has been successfully added.");
+				} catch (error) {
+					console.error("Error adding certification:", error);
+				}
+			},
+
+			editCertification: async (certificationId, updatedCertificationData) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/certifications/${certificationId}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${getStore().token}`
+						},
+						body: JSON.stringify(updatedCertificationData),
+					});
+					if (!response.ok) throw new Error('Failed to update certification');
+					const updatedCertification = await response.json();
+
+					// Update the certifications array in the store
+					const certifications = getStore().certifications;
+					const updatedCertifications = certifications.map(certification =>
+						certification.id === certificationId ? updatedCertification : certification
+					);
+					setStore({ certifications: updatedCertifications });
+
+					return updatedCertification;
+				} catch (error) {
+					console.error("Error updating certification:", error);
+				}
+			},
+
+			deleteCertifications: async (certificationIds) => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/certifications/${certificationIds}`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${getStore().token}`
+						},
+						body: JSON.stringify(certificationIds)
+					});
+					if (!resp.ok) { throw new Error(`Failed to delete certification: ${resp.status} - ${resp.statusText}`); }
+					const deletedCertifications = await resp.json();
+					setStore({ certifications: getStore().certifications.filter(certification => !deletedCertifications.includes(certification.id)) });
+					alert("Your certification has been successfully deleted.")
+				} catch (error) {
+					console.error("Error deleting certification:", error);
+				}
+			},
+
+			reorderCertifications: (dragIndex, hoverIndex) => {
+				const certifications = [...getStore().certifications];
+				const draggedCertification = certifications[dragIndex];
+				certifications.splice(dragIndex, 1);
+				certifications.splice(hoverIndex, 0, draggedCertification);
+				setStore({ certifications });
+				getActions().updateCertificationsOrder(certifications);
+			},
+
+			updateCertificationsOrder: async (certifications) => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/certifications/reorder`, {
+						method: 'PUT',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(certifications.map((certification, index) => ({ id: certification.id, order: index })))
+					});
+					if (!resp.ok) throw new Error('Failed to update certification order');
+				} catch (error) {
+					console.error("Error updating certification order:", error);
+				}
+			},
 		}
 	};
 };

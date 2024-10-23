@@ -4,11 +4,11 @@ import { useDrag, useDrop } from 'react-dnd';
 import reorderIcon from "../../img/reorder.png";
 
 
-const Course = ({ course, editMode, handleEditClick, handleDeleteCourse, index, handleReorder }) => {
+const Certification = ({ certification, editMode, handleEditClick, handleDeleteCertification, index, handleReorder }) => {
     const ref = useRef(null);
 
     const [, drop] = useDrop({
-        accept: 'COURSE',
+        accept: 'CERTIFICATION',
         hover(item, monitor) {
             if (!ref.current) {
                 return;
@@ -24,7 +24,7 @@ const Course = ({ course, editMode, handleEditClick, handleDeleteCourse, index, 
     });
 
     const [{ isDragging }, drag] = useDrag({
-        type: 'COURSE',
+        type: 'CERTIFICATION',
         item: { index },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
@@ -35,23 +35,23 @@ const Course = ({ course, editMode, handleEditClick, handleDeleteCourse, index, 
 
 
     const formatDate = (date) => new Date(date).toLocaleDateString();
-    const getCourseDetails = () => {
+    const getCertificationDetails = () => {
         const details = [];
-        if (course.is_completed) {
-            if (course.start_date) details.push(`Started: ${formatDate(course.start_date)}`);
-            if (course.due_date) details.push(`Completed: ${formatDate(course.due_date)}`);
-            if (course.expiration_date) details.push(`Expires: ${formatDate(course.expiration_date)}`);
+        if (certification.is_completed) {
+            if (certification.start_date) details.push(`Started: ${formatDate(certification.start_date)}`);
+            if (certification.due_date) details.push(`Completed: ${formatDate(certification.due_date)}`);
+            if (certification.expiration_date) details.push(`Expires: ${formatDate(certification.expiration_date)}`);
         } else {
-            if (course.exp_starting_date) details.push(`Start By: ${formatDate(course.exp_starting_date)}`);
-            if (course.start_date) details.push(`Started: ${formatDate(course.start_date)}`);
-            if (course.due_date) details.push(`Due: ${formatDate(course.due_date)}`);
-            if (course.expiration_date) details.push(`Expires: ${formatDate(course.expiration_date)}`);
+            if (certification.exp_starting_date) details.push(`Start By: ${formatDate(certification.exp_starting_date)}`);
+            if (certification.start_date) details.push(`Started: ${formatDate(certification.start_date)}`);
+            if (certification.due_date) details.push(`Due: ${formatDate(certification.due_date)}`);
+            if (certification.expiration_date) details.push(`Expires: ${formatDate(certification.expiration_date)}`);
         }
         return details.join(' | ');
     };
 
     return (
-        <li ref={ref} key={course.id} className="list-group-item d-flex align-items-center" style={{ opacity: isDragging ? 0.5 : 1 }}>
+        <li ref={ref} key={certification.id} className="list-group-item d-flex align-items-center" style={{ opacity: isDragging ? 0.5 : 1 }}>
             {editMode && (
                 <div className="me-3 d-flex align-items-center">
                     {/* <ThreeDotsVertical style={{ cursor: 'move' }} /> */}
@@ -68,30 +68,30 @@ const Course = ({ course, editMode, handleEditClick, handleDeleteCourse, index, 
             )}
             <div>
                 <h5 className="d-flex align-items-center m-0">
-                    <span className="me-2">{course.name}</span>
-                    <span className="badge bg-secondary me-2">{course.number}</span>
-                    {!course.is_completed && course.exp_timeframe && (
+                    <span className="me-2">{certification.name}</span>
+                    <span className="badge bg-secondary me-2">{certification.number}</span>
+                    {!certification.is_completed && certification.exp_timeframe && (
                         <span className="text-muted fs-6 fw-normal">
-                            ({course.exp_timeframe})
+                            ({certification.exp_timeframe})
                         </span>
                     )}
                 </h5>
                 <p className="mb-0">
-                    <small>{getCourseDetails()}</small>
+                    <small>{getCertificationDetails()}</small>
                 </p>
             </div>
             <div className="d-flex align-items-center ms-auto">
-                {course.is_completed && (
+                {certification.is_completed && (
                     <div className="px-2">
                         <CheckCircle className="text-success my-auto" />
                     </div>
                 )}
                 {editMode && (
                     <div className={`d-flex flex-column flex-md-row ${editMode ? "btn-group-vertical" : ""}`}>
-                        <button className="btn btn-outline-primary btn-sm m-1 rounded" onClick={() => handleEditClick(course)}>
+                        <button className="btn btn-outline-primary btn-sm m-1 rounded" onClick={() => handleEditClick(certification)}>
                             <PencilSquare />
                         </button>
-                        <button className="btn btn-outline-danger btn-sm m-1 rounded" onClick={() => handleDeleteCourse(course.id)}>
+                        <button className="btn btn-outline-danger btn-sm m-1 rounded" onClick={() => handleDeleteCertification(certification.id)}>
                             <Trash />
                         </button>
                     </div>
@@ -101,4 +101,4 @@ const Course = ({ course, editMode, handleEditClick, handleDeleteCourse, index, 
     );
 };
 
-export default Course;
+export default Certification;
