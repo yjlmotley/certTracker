@@ -38,11 +38,21 @@ export const Navbar = () => {
 							<Book className="me-1" />
 							All courses
 						</Link>
+						<Link to="/admin-certification-tracker" className="dropdown-item">
+							<Book className="me-1" />
+							All certications
+						</Link>
 						{isLoggedIn && (
-							<Link to={`/${username}/course-tracker`} className="dropdown-item">
-								<Book className="me-1" />
-								Your Course Tracker
-							</Link>
+							<>
+								<Link to={`/${username}/course-tracker`} className="dropdown-item">
+									<Book className="me-1" />
+									Your Course Tracker
+								</Link>
+								<Link to={`/${username}/certification-tracker`} className="dropdown-item">
+									<Book className="me-1" />
+									Your Certification Tracker
+								</Link>
+							</>
 						)}
 					</ul>
 					{isLoggedIn ? (

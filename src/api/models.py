@@ -141,7 +141,7 @@ class Certification(db.Model):
             "other_details": self.other_details,
             "order": self.order,
             # Serialize related user info
-            "user_id": self.user.id if self.user else None,
+            "user_id": self.user_id if self.user else None,
             "user_first_name": self.user.first_name if self.user else None,
             "user_last_name": self.user.last_name if self.user else None,
             "username": self.user.username if self.user else None,

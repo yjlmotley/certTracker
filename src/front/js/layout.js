@@ -14,7 +14,9 @@ import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 
 import { AdminCourseTracker } from "./pages/adminCourseTracker";
+import { AdminCertificationTracker } from "./pages/adminCertificationTracker";
 import { CourseTracker } from "./pages/courseTracker";
+import { CertificationTracker } from "./pages/certificationTracker";
 import SignUp from "./pages/signUp";
 import Login from "./pages/login";
 
@@ -39,7 +41,9 @@ const Layout = () => {
                             <Route element={<ForgotPassword />} path="/forgot-password" />
                             <Route element={<ChangePassword />} path="/change-password" />
                             <Route element={<AdminCourseTracker />} path="/admin-course-tracker" />
+                            <Route element={<AdminCertificationTracker />} path="/admin-certification-tracker" />
                             <Route element={<CourseTracker />} path="/:username/course-tracker" />
+                            <Route element={<CertificationTracker />} path="/:username/certification-tracker" />
                             <Route element={<h1>Not found!</h1>} />
                         </Routes>
                         <Footer />
