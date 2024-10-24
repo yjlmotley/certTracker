@@ -1,3 +1,5 @@
+let currentController = null;
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -190,9 +192,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			updateCoursesOrder: async (courses) => {
+				// Abort any pending request
+				if (currentController) {
+					currentController.abort();
+				}
+
+				// Create new controller
+				currentController = new AbortController();
+
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/courses/reorder`, {
 						method: 'PUT',
+						signal: currentController.signal,
 						headers: { 'Content-Type': 'application/json' },
 						body: JSON.stringify(courses.map((course, index) => ({ id: course.id, order: index })))
 					});
@@ -305,9 +316,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			updateCertificationsOrder: async (certifications) => {
+				// Abort any pending request
+				if (currentController) {
+					currentController.abort();
+				}
+
+				// Create new controller
+				currentController = new AbortController();
+
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/certifications/reorder`, {
 						method: 'PUT',
+						signal: currentController.signal,
 						headers: { 'Content-Type': 'application/json' },
 						body: JSON.stringify(certifications.map((certification, index) => ({ id: certification.id, order: index })))
 					});

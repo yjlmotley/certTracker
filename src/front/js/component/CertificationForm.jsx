@@ -42,6 +42,8 @@ const CertificationForm = ({ setEditMode, currentCertification, setCurrentCertif
 
         const certificationData = {
             ...certificationFormData,
+
+            order: null,
             exp_starting_date: exp_starting_date || null,
             start_date: start_date || null,
             due_date: due_date || null,

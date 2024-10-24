@@ -3,7 +3,7 @@ TODOS:
 - [ ] add password strength (min. 5 character with letters & numbers & username format (length & allowed characters))
 - [ ] add errors for adding (such as max characters)
 - [ ] make placeholders grey
-- [ ] order is still not working
+- [ ] fix the ADMIN pages so that it shows the user and then their courses/certifications separately as a card li
 - [ ] universal time is making it harder to understand (keep it universal in the db and local time on front end for dates)
 - [ ] make course number to 35 max characters
 - [ ] add a print and a share link buttons on top right

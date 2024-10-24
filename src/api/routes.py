@@ -146,7 +146,7 @@ def reset_password(token):
 @api.route('/all-courses', methods=['GET'])
 def get_all_courses():
     try:
-        courses = Course.query.all()
+        courses = Course.query.order_by(Course.order.asc()).all()
         return jsonify([course.serialize() for course in courses]), 200 # OK status code
     except Exception as e:
         return jsonify({"error": str(e)}), 500 # Internal Server Error
@@ -158,7 +158,7 @@ def get_courses(username):
         if not user:
             return jsonify({"error": "User not found"}), 404
     
-        courses = Course.query.filter_by(user_id=user.id).all()  
+        courses = Course.query.filter_by(user_id=user.id).order_by(Course.order.asc()).all()  
         return jsonify([course.serialize() for course in courses]), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -219,7 +219,10 @@ def update_course(course_id):
     course.is_completed = course_data['is_completed']
     course.number = course_data['number']
     course.name = course_data['name']
-    course.order = course_data.get('order', course.order)
+    order = course_data.get('order')
+    if not order:
+        order = course.order
+    course.order = order
     course.exp_starting_date = course_data['exp_starting_date']
     course.start_date = course_data['start_date']
     course.due_date = course_data['due_date']
@@ -265,7 +268,7 @@ def delete_course(course_id):
 @api.route('/all-certifications', methods=['GET'])
 def get_all_certifications():
     try:
-        certifications = Certification.query.all()
+        certifications = Certification.query.order_by(Certification.order.asc()).all()
         return jsonify([certification.serialize() for certification in certifications]), 200 # OK status code
     except Exception as e:
         return jsonify({"error": str(e)}), 500 # Internal Server Error
@@ -277,7 +280,7 @@ def get_certifications(username):
         if not user:
             return jsonify({"error": "User not found"}), 404
     
-        certifications = Certification.query.filter_by(user_id=user.id).all()  
+        certifications = Certification.query.filter_by(user_id=user.id).order_by(Certification.order.asc()).all()
         return jsonify([certification.serialize() for certification in certifications]), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -338,7 +341,11 @@ def update_certification(certification_id):
     certification.is_completed = certification_data['is_completed']
     certification.number = certification_data['number']
     certification.name = certification_data['name']
-    certification.order = certification_data.get('order', certification.order)
+    # certification.order = certification_data.get('order', certification.order)
+    order = certification_data.get('order')
+    if not order:
+        order = certification.order
+    certification.order = order
     certification.exp_starting_date = certification_data['exp_starting_date']
     certification.start_date = certification_data['start_date']
     certification.due_date = certification_data['due_date']
