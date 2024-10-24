@@ -40,14 +40,18 @@ const CourseForm = ({ setEditMode, currentCourse, setCurrentCourse, onCancel, us
         event.preventDefault();
         const { exp_starting_date, start_date, due_date, expiration_date } = courseFormData;
 
+        // console.log("courseFormData from courseForm.jsx", courseFormData);
         const courseData = {
             ...courseFormData,
+
+            order: null,
             exp_starting_date: exp_starting_date || null,
             start_date: start_date || null,
             due_date: due_date || null,
             expiration_date: expiration_date || null
         };
 
+        // console.log("coursedata from courseForm.jsx", courseData);
         if (currentCourse) {
             await actions.editCourse(currentCourse.id, courseData);
         } else {
