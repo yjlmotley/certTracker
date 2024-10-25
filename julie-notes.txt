@@ -52,6 +52,10 @@ or...
         or
         *hosting.com/cert-tracker/username
 
+
+-------- notes --------
+* link for cert-tracker img: https://www.greentrainingusa.com/media/icons/medium/cert-tracker.jpg
+
 * You will only be able to see the edit courses button if the logged in user_id matches the user_id of the courses
 
 -------- installs needed ----------
