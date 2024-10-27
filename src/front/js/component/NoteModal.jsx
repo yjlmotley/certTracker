@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
 import { CgNotes } from "react-icons/cg";
 
+
 const NoteModal = ({ details, onButtonClick }) => {
     const [show, setShow] = useState(false);
 
@@ -12,7 +13,7 @@ const NoteModal = ({ details, onButtonClick }) => {
         if (typeof details === 'string') {
             return details;
         }
-        
+
         if (typeof details === 'object' && details !== null) {
             return Object.entries(details)
                 .map(([key, value]) => {
@@ -22,7 +23,7 @@ const NoteModal = ({ details, onButtonClick }) => {
                     return { key: formattedKey, value };
                 });
         }
-        
+
         return 'No details available';
     };
 
@@ -30,9 +31,21 @@ const NoteModal = ({ details, onButtonClick }) => {
 
     return (
         <>
-            <span 
-                className="btn btn-outline-secondary p-1" 
-                id="courseNoteBtn" 
+            <style>
+                {`
+                    @media (min-width: 768px) {
+                        .wide-modal {
+                            width: fit-content;
+                            max-width: 50% !important;
+                            min-width: 33.33% !important;
+                        }
+                    }
+                `}
+            </style>
+
+            <span
+                className="btn btn-outline-secondary p-1"
+                id="courseNoteBtn"
                 onClick={() => {
                     handleShow();
                     onButtonClick();
@@ -46,11 +59,12 @@ const NoteModal = ({ details, onButtonClick }) => {
                 onHide={handleClose}
                 centered
                 scrollable
+                dialogClassName="wide-modal"
             >
                 <Modal.Header closeButton>
                     <Modal.Title>Course Notes</Modal.Title>
                 </Modal.Header>
-                <Modal.Body style={{ 
+                <Modal.Body style={{
                     overflowX: 'hidden',
                     wordWrap: 'break-word',
                     whiteSpace: 'pre-wrap'
@@ -62,9 +76,9 @@ const NoteModal = ({ details, onButtonClick }) => {
                     ) : (
                         <div>
                             {formattedDetails.map(({ key, value }, index) => (
-                                <div 
-                                    key={index} 
-                                    style={{ 
+                                <div
+                                    key={index}
+                                    style={{
                                         marginBottom: '0.5rem',
                                         overflowWrap: 'break-word'
                                     }}

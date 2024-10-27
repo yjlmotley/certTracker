@@ -1,11 +1,15 @@
-import React, { useRef } from "react";
-import { PencilSquare, Trash, CheckCircle, ThreeDotsVertical } from 'react-bootstrap-icons';
+import React, { useRef, useState } from "react";
+import NoteModal from "./NoteModal.jsx";
+import "../../styles/popup.css";
+
+import { PencilSquare, Trash, CheckCircle } from 'react-bootstrap-icons';
 import { useDrag, useDrop } from 'react-dnd';
 import reorderIcon from "../../img/reorder.png";
 
 
 const Certification = ({ certification, editMode, handleEditClick, handleDeleteCertification, index, handleReorder }) => {
     const ref = useRef(null);
+    const [showPopup, setShowPopup] = useState(false);
 
     const [, drop] = useDrop({
         accept: 'CERTIFICATION',
@@ -50,6 +54,13 @@ const Certification = ({ certification, editMode, handleEditClick, handleDeleteC
         return details.join(' | ');
     };
 
+    const handleMouseEnter = () => {
+        setShowPopup(true);
+    };
+    const handleMouseLeave = () => {
+        setShowPopup(false);
+    };
+
     return (
         <li ref={ref} key={certification.id} className="list-group-item d-flex align-items-center" style={{ opacity: isDragging ? 0.5 : 1 }}>
             {editMode && (
@@ -70,6 +81,30 @@ const Certification = ({ certification, editMode, handleEditClick, handleDeleteC
                 <h5 className="d-flex align-items-center m-0">
                     <span className="me-2">{certification.name}</span>
                     <span className="badge bg-secondary me-2">{certification.number}</span>
+                    {certification.other_details &&
+                        <>
+                            <div className="popup" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                                <NoteModal
+                                    details={certification.other_details}
+                                    onButtonClick={() => setShowPopup(false)}
+                                />                        
+                                    <div className={`popuptext ${showPopup ? 'show' : ''}`}>
+                                        <div className="popup-content">
+                                            {typeof certification.other_details === 'string'
+                                                ? certification.other_details
+                                                : Object.entries(certification.other_details)
+                                                    .map(([key, value]) => (
+                                                        <div key={key}>
+                                                            <strong>{key.replace(/([A-Z])/g, ' $1').trim()}</strong>: {value}
+                                                        </div>
+                                                    ))
+                                            }
+                                        </div>
+                                    </div>
+                            </div>
+
+                        </>
+                    }
                     {!certification.is_completed && certification.exp_timeframe && (
                         <span className="text-muted fs-6 fw-normal">
                             ({certification.exp_timeframe})
