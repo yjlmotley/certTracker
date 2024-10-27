@@ -1,0 +1,88 @@
+/* Popup container */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  /* The actual popup */
+  .popup .popuptext {
+    visibility: hidden;
+    width: 300px;
+    background-color: #555;
+    color: #fff;
+    text-align: left;
+    padding: 8px 16px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+  
+    /* Clip the container to match border radius */
+    clip-path: inset(0 0 0 0 round 6px);
+    border-radius: 6px;
+  
+    /* Scrolling */
+    max-height: 300px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  
+    /* Word breaking and wrapping */
+    word-break: break-word;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  /* Scrollbar styling */
+  .popup .popuptext::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .popup .popuptext::-webkit-scrollbar-track {
+    background: #555;
+  }
+  
+  .popup .popuptext::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 6px;
+  }
+  
+  /* Popup arrow */
+  .popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #555;
+  }
+  
+  /* Show/hide animation */
+  .popup .show {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  /* Responsive adjustments */
+  @media screen and (max-width: 400px) {
+    .popup .popuptext {
+      width: 250px;
+    }
+  }
+  
+  @media screen and (max-width: 320px) {
+    .popup .popuptext {
+      width: 200px;
+    }
+  }
+  
+  /* Mobile adjustments */
+  @media screen and (max-width: 768px) {
+    .popup .popuptext {
+      bottom: 100%;
+      max-height: 200px;
+    }
+  }

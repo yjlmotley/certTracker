@@ -1,11 +1,16 @@
-import React, { useRef } from "react";
-import { PencilSquare, Trash, CheckCircle, ThreeDotsVertical } from 'react-bootstrap-icons';
+import React, { useRef, useState } from "react";
 import { useDrag, useDrop } from 'react-dnd';
+import NoteModal from "./NoteModal.jsx";
+import "../../styles/popup.css";
+
 import reorderIcon from "../../img/reorder.png";
+import { PencilSquare, Trash, CheckCircle } from 'react-bootstrap-icons';
+// import { CgNotes } from "react-icons/cg";
 
 
 const Course = ({ course, editMode, handleEditClick, handleDeleteCourse, index, handleReorder }) => {
     const ref = useRef(null);
+    const [showPopup, setShowPopup] = useState(false);
 
     const [, drop] = useDrop({
         accept: 'COURSE',
@@ -50,11 +55,17 @@ const Course = ({ course, editMode, handleEditClick, handleDeleteCourse, index, 
         return details.join(' | ');
     };
 
+    const handleMouseEnter = () => {
+        setShowPopup(true);
+    };
+    const handleMouseLeave = () => {
+        setShowPopup(false);
+    };
+
     return (
         <li ref={ref} key={course.id} className="list-group-item d-flex align-items-center" style={{ opacity: isDragging ? 0.5 : 1 }}>
             {editMode && (
                 <div className="me-3 d-flex align-items-center">
-                    {/* <ThreeDotsVertical style={{ cursor: 'move' }} /> */}
                     <img
                         src={reorderIcon}
                         alt="reorder"
@@ -70,6 +81,48 @@ const Course = ({ course, editMode, handleEditClick, handleDeleteCourse, index, 
                 <h5 className="d-flex align-items-center m-0">
                     <span className="me-2">{course.name}</span>
                     <span className="badge bg-secondary me-2">{course.number}</span>
+                    {course.other_details &&
+                        <>
+                            {/* <div className="popup">
+                                <span
+                                    className="btn btn-outline-secondary p-1"
+                                    id="courseNoteBtn"
+                                    onClick={togglePopup}
+                                >
+                                    <CgNotes />
+                                </span>
+                                <div className={`popuptext ${showPopup ? 'show' : ''}`}>
+                                    {course.other_details}
+                                </div>
+                            </div> */}
+                            {/* <div className="popup" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                                <NoteModal details={course.other_details} />
+                                <div className={`popuptext ${showPopup ? 'show' : ''}`}>
+                                    {course.other_details}
+                                </div>
+                            </div> */}
+                            <div className="popup" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                                <NoteModal
+                                    details={course.other_details}
+                                    onButtonClick={() => setShowPopup(false)}
+                                />                        
+                                    <div className={`popuptext ${showPopup ? 'show' : ''}`}>
+                                        <div className="popup-content">
+                                            {typeof course.other_details === 'string'
+                                                ? course.other_details
+                                                : Object.entries(course.other_details)
+                                                    .map(([key, value]) => (
+                                                        <div key={key}>
+                                                            <strong>{key.replace(/([A-Z])/g, ' $1').trim()}</strong>: {value}
+                                                        </div>
+                                                    ))
+                                            }
+                                        </div>
+                                    </div>
+                            </div>
+
+                        </>
+                    }
                     {!course.is_completed && course.exp_timeframe && (
                         <span className="text-muted fs-6 fw-normal">
                             ({course.exp_timeframe})
