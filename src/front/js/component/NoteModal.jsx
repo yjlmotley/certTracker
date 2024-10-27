@@ -44,7 +44,7 @@ const NoteModal = ({ details, onButtonClick }) => {
             </style>
 
             <span
-                className="btn btn-outline-secondary p-1"
+                className="btn btn-outline-secondary p-1 me-2"
                 id="courseNoteBtn"
                 onClick={() => {
                     handleShow();

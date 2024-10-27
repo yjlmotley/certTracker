@@ -18,43 +18,61 @@ export const Navbar = () => {
 
 	return (
 		<nav className="navbar navbar-light bg-light mb-4">
-			{/* // <nav className="navbar mb-4" style={{ backgroundColor: "#E0DCDC" }}> */}
-			{/* <nav className="navbar navbar-light mb-4" style={{ backgroundColor: "#D8D8D8" }}> */}
 			<div className="container">
 				<Link to="/" className="navbar-brand">
 					<Book className="me-2" />
 					Cert Tracker
 				</Link>
-				<div className="ms-auto dropdown">
-					<a className="btn btn-outline-dark me-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						<i className="fa-solid fa-bars"></i>
-					</a>
-					<ul className="dropdown-menu">
-						<Link to="/" className="dropdown-item">
-							<House className="me-1" />
-							Home
-						</Link>
-						<Link to="/admin-course-tracker" className="dropdown-item">
-							<Book className="me-1" />
-							All courses
-						</Link>
-						<Link to="/admin-certification-tracker" className="dropdown-item">
-							<Book className="me-1" />
-							All certications
-						</Link>
-						{isLoggedIn && (
-							<>
-								<Link to={`/${username}/course-tracker`} className="dropdown-item">
-									<Book className="me-1" />
-									Your Course Tracker
+				<div className="d-flex align-items-center">
+					<div className="dropdown me-2">
+						<button 
+							className="btn btn-outline-dark" 
+							type="button" 
+							data-bs-toggle="dropdown" 
+							aria-expanded="false"
+						>
+							<i className="fa-solid fa-bars"></i>
+							<span> Menu</span>
+						</button>
+						<ul className="dropdown-menu dropdown-menu-end">
+							{/* <h4 className="text-center">Menu</h4>
+							<hr className="m-2"></hr> */}
+							{/* <li>
+								<Link to="/" className="dropdown-item">
+									<House className="me-1" />
+									Home
 								</Link>
-								<Link to={`/${username}/certification-tracker`} className="dropdown-item">
+							</li> */}
+							<li>
+								<Link to="/admin-course-tracker" className="dropdown-item">
 									<Book className="me-1" />
-									Your Certification Tracker
+									All courses
 								</Link>
-							</>
-						)}
-					</ul>
+							</li>
+							<li>
+								<Link to="/admin-certification-tracker" className="dropdown-item">
+									<Book className="me-1" />
+									All certications
+								</Link>
+							</li>
+							{isLoggedIn && (
+								<>
+									<li>
+										<Link to={`/${username}/course-tracker`} className="dropdown-item">
+											<Book className="me-1" />
+											Your Course Tracker
+										</Link>
+									</li>
+									<li>
+										<Link to={`/${username}/certification-tracker`} className="dropdown-item">
+											<Book className="me-1" />
+											Your Certification Tracker
+										</Link>
+									</li>
+								</>
+							)}
+						</ul>
+					</div>
 					{isLoggedIn ? (
 						<button onClick={handleLogout} className="btn btn-outline-dark">
 							<PersonCircle className="me-1" />
