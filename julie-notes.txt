@@ -1,5 +1,8 @@
 TODOS: 
 
+- [ ] make sure you can't clikc and drag order when it's not in edit mode
+- [ ] in detail notes pop up, make sure x-axis scroll is off/disabled
+- [ ] when you click on the edit btn the form should not be unexpanded (make sure it's expanded)
 - [ ] add password strength (min. 5 character with letters & numbers & username format (length & allowed characters))
 - [ ] add errors for adding (such as max characters)
 - [ ] make placeholders grey
@@ -60,3 +63,5 @@ or...
 
 -------- installs needed ----------
 * npm install react-dnd react-dnd-html5-backend
+* npm install react-icons --save
+* npm install react-bootstrap
