@@ -1,5 +1,11 @@
 TODOS: 
 
+- [ ] Make the admin: course tracker & admin: certifications tracker available to admin only - figure out a creative way or only logged in under my email or admin email
+- [ ] Add cloudinary to upload cert images
+- [ ] Add a button that takes you to a different link for each certification (link that takes you to a online cert page such as: https://certificate.4geeks.com/2de00efc80a1d717038b059d9d32600378ba9ec1)
+- [ ] share button so it shares a shareable link to this page that others can see but not edit
+- [ ] Maybe a see my resume circle button attached option to each of the pages (when you click on it, the resume pops up as a modal - that you may download and/or search through)
+
 - [ ] make sure you can't clikc and drag order when it's not in edit mode
 - [ ] in detail notes pop up, make sure x-axis scroll is off/disabled
 - [ ] when you click on the edit btn the form should not be unexpanded (make sure it's expanded)
