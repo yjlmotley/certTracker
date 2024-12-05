@@ -1,9 +1,13 @@
 TODOS: 
 - [ ] BUGFIX: when trying to add this info - I'm getting a 500 error (i'm guessing too many char for the course # - but I'm not seeing any errors pop up so I can't tell what issue it is - make sure the error message is showing)
 * COURSE NUMBER: MEDCERTS: CERTIFICATION PATHWAY
+- [ ] change the days it shows (when adding a date and showing a date - to local time: maybe conversation from utc or a better way if found)
 
-- [ ] When clicking the edit button, I want it to take me to the top of the page.
+- [ ] When clicking the edit button, I want it to take me to the top of the page && open up the hide button 
+- [ ] create a little pop up so when you hover over the toggle show/hide button (it says either hide or show)
+- [ ] better show/hide button
 
+- [ ] front end - not so boring
 - [ ] Make the admin: course tracker & admin: certifications tracker available to admin only - figure out a creative way or only logged in under my email or admin email
 - [ ] Add cloudinary to upload cert images
 - [ ] Add a button that takes you to a different link for each certification (link that takes you to a online cert page such as: https://certificate.4geeks.com/2de00efc80a1d717038b059d9d32600378ba9ec1)
