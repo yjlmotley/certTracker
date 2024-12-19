@@ -2,17 +2,19 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for, send_from_directory
+from flask import Flask, request, jsonify, url_for, send_from_directory, send_file, session
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db, User
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
-from flask_jwt_extended import JWTManager
+# from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
+from datetime import datetime
 
-# from models import Person
+
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
@@ -71,6 +73,114 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+
+
+# ---------------------------------- EXPORT/IMPORT DB ROUTES ----------------------------------
+# ---------------------------------- EXPORT/IMPORT DB ROUTES ----------------------------------
+def is_admin():
+    """Helper function to check if current user is admin"""
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    return user and user.email == os.getenv("ADMIN_EMAIL")
+
+@app.route('/backup-database', methods=['GET'])
+@jwt_required()
+def backup_database():
+    filename = "database_backup.json"
+    try:
+        # Check if user is admin
+        if not is_admin():
+            return jsonify({"error": "Unauthorized. Admin access required."}), 403
+
+        # Generate a filename with timestamp
+        # timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        # filename = f"database_backup_{timestamp}.json"
+        # filename = f"database_backup.json"
+        
+        # Get the current Flask app instance
+        # current_app = app._get_current_object()
+        
+        # Call our export command programmatically
+        # with current_app.app_context():
+            # current_app.test_cli_runner().invoke(args=['export-db', filename])
+        with app.app_context():
+            app.test_cli_runner().invoke(args=['export-db', filename])
+        
+        # Send the file to the user
+        # return send_file(
+        #     filename,
+        #     mimetype='application/json',
+        #     as_attachment=True,
+        #     download_name=filename
+        # )
+        return jsonify({"message": "Database backup successful"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    # finally:
+    #     print("filename:", filename)
+        # Clean up the file after sending
+        # if os.path.exists(filename):
+        #     os.remove(filename)
+
+@app.route('/restore-database', methods=['POST'])
+@jwt_required()
+def restore_database():
+    try:
+        # Check if user is admin
+        if not is_admin():
+            return jsonify({"error": "Unauthorized. Admin access required."}), 403
+
+        # if 'file' not in request.files:
+        #     return jsonify({"error": "No file provided"}), 400
+        
+        # file = request.files['file']
+        # if file.filename == '':
+        #     return jsonify({"error": "No file selected"}), 400
+        
+        # if not file.filename.endswith('.json'):
+        #     return jsonify({"error": "File must be a JSON file"}), 400
+        
+        # Save the uploaded file temporarily
+        # temp_filename = f"temp_restore_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        # file.save(temp_filename)
+        
+        # Get the current Flask app instance
+        # current_app = app._get_current_object()
+        
+        # Call our import command programmatically
+        # with current_app.app_context():
+        #     result = current_app.test_cli_runner().invoke(
+        #         args=['import-db', temp_filename, '--clear']
+        #     )
+        
+        # if result.exit_code == 0:
+        #     return jsonify({"message": "Database restored successfully"}), 200
+        # else:
+        #     return jsonify({"error": "Failed to restore database", "details": result.output}), 500
+            
+        # Get the root directory path and backup file path
+        root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        backup_path = os.path.join(root_dir, "database_backup.json")
+        
+        # Check if backup file exists
+        if not os.path.exists(backup_path):
+            return jsonify({"error": "Backup file not found in root directory"}), 404
+        
+        # Call our import command programmatically
+        with app.app_context():
+            result = app.test_cli_runner().invoke(args=['import-db', backup_path, '--clear'])
+        
+        if result.exit_code == 0:
+            return jsonify({"message": "Database restored successfully"}), 200
+        else:
+            return jsonify({"error": "Failed to restore database", "details": result.output}), 500
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    # finally:
+        # Clean up the temporary file
+        # if os.path.exists(temp_filename):
+        #     os.remove(temp_filename)
 
 
 # this only runs if `$ python src/main.py` is executed
