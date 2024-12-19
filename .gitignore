@@ -80,6 +80,7 @@ database.database
 database.db
 diagram.png
 __pycache__/
+database_backup.json
 
 # notes
 julie-notes.txt
