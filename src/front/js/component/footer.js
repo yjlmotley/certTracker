@@ -9,7 +9,7 @@ export const Footer = () => {
 	// 	</p>
 	// </footer>
 	return (
-		<footer class="bg-success bg-gradient py-5" id="footer">
+		<footer class="bg-success bg-gradient py-4" id="footer">
 			<div class="container">
 				{/* <!-- Main Footer Content --> */}
 				<div class="row mb-4">
@@ -46,7 +46,7 @@ export const Footer = () => {
 						<h4 class="text-white">Stay Updated</h4>
 						<div class="input-group">
 							<input type="email" class="form-control" placeholder="Enter your email" />
-								<button class="btn btn-dark">Subscribe</button>
+							<button class="btn btn-dark">Subscribe</button>
 						</div>
 					</div>
 				</div>

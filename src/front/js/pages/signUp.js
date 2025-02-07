@@ -97,7 +97,7 @@ export default function SignUp() {
   }
 
   return (
-    <div className="container mt-5 signup-div auth">
+    <div className="container my-5 signup-div auth">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card shadow">

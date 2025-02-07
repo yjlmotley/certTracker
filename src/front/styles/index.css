@@ -19,12 +19,17 @@
   line-height: 1rem;
 }
 
-
-#page-container {
+/* footer styling option 2 */
+/* #page-container {
   position: relative;
   min-height: 100vh;
-}
+} */
+
+/* footer styling option 2 */
+/* #content-wrapper {
+  padding-bottom: 365px;
+} */
 
 #content-wrapper {
-  padding-bottom: 365px;
+  min-height: 70vh;
 }
