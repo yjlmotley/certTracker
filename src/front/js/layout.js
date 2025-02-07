@@ -20,7 +20,7 @@ import { CertificationTracker } from "./pages/certificationTracker";
 import SignUp from "./pages/signUp";
 import Login from "./pages/login";
 
-//create your first component
+
 const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
     // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
@@ -30,22 +30,24 @@ const Layout = () => {
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <div>
+            <div id="page-container">
                 <BrowserRouter basename={basename}>
                     <ScrollToTop>
                         <Navbar />
-                        <Routes>
-                            <Route element={<Home />} path="/" />
-                            <Route element={<SignUp />} path="/sign-up" />
-                            <Route element={<Login />} path="/login" />
-                            <Route element={<ForgotPassword />} path="/forgot-password" />
-                            <Route element={<ChangePassword />} path="/change-password" />
-                            <Route element={<AdminCourseTracker />} path="/admin-course-tracker" />
-                            <Route element={<AdminCertificationTracker />} path="/admin-certification-tracker" />
-                            <Route element={<CourseTracker />} path="/:username/course-tracker" />
-                            <Route element={<CertificationTracker />} path="/:username/certification-tracker" />
-                            <Route element={<h1>Not found!</h1>} />
-                        </Routes>
+                        <div id="content-wrapper">
+                            <Routes>
+                                <Route element={<Home />} path="/" />
+                                <Route element={<SignUp />} path="/sign-up" />
+                                <Route element={<Login />} path="/login" />
+                                <Route element={<ForgotPassword />} path="/forgot-password" />
+                                <Route element={<ChangePassword />} path="/change-password" />
+                                <Route element={<AdminCourseTracker />} path="/admin-course-tracker" />
+                                <Route element={<AdminCertificationTracker />} path="/admin-certification-tracker" />
+                                <Route element={<CourseTracker />} path="/:username/course-tracker" />
+                                <Route element={<CertificationTracker />} path="/:username/certification-tracker" />
+                                <Route element={<h1>Not found!</h1>} />
+                            </Routes>
+                        </div>
                         <Footer />
                     </ScrollToTop>
                 </BrowserRouter>

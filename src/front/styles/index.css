@@ -18,3 +18,13 @@
 #courseNoteBtn {
   line-height: 1rem;
 }
+
+
+#page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+#content-wrapper {
+  padding-bottom: 365px;
+}
