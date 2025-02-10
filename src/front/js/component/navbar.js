@@ -25,38 +25,42 @@ export const Navbar = () => {
 				</Link>
 				<div className="d-flex align-items-center">
 					<div className="dropdown me-2">
-						<button 
-							className="btn btn-outline-dark" 
-							type="button" 
-							data-bs-toggle="dropdown" 
+						<button
+							className="btn btn-outline-dark"
+							type="button"
+							data-bs-toggle="dropdown"
 							aria-expanded="false"
 						>
 							<i className="fa-solid fa-bars"></i>
 							<span> Menu</span>
 						</button>
 						<ul className="dropdown-menu dropdown-menu-end">
-							{/* <h4 className="text-center">Menu</h4>
-							<hr className="m-2"></hr> */}
-							{/* <li>
-								<Link to="/" className="dropdown-item">
-									<House className="me-1" />
-									Home
-								</Link>
-							</li> */}
 							<li>
-								<Link to="/admin-course-tracker" className="dropdown-item">
-									<Book className="me-1" />
-									All courses
+								<Link to="/getting-started" className="dropdown-item">
+									{/* <Book className="me-1" /> */}
+									Getting Started
 								</Link>
 							</li>
-							<li>
-								<Link to="/admin-certification-tracker" className="dropdown-item">
-									<Book className="me-1" />
-									All certications
-								</Link>
-							</li>
+							{store.currentUser?.email === "admin@certtracker.com" && (
+								<>
+									<hr style={{ margin: ".25rem .5rem" }}></hr>
+									<li>
+										<Link to="/admin-course-tracker" className="dropdown-item">
+											<Book className="me-1" />
+											All courses
+										</Link>
+									</li>
+									<li>
+										<Link to="/admin-certification-tracker" className="dropdown-item">
+											<Book className="me-1" />
+											All certications
+										</Link>
+									</li>
+								</>
+							)}
 							{isLoggedIn && (
 								<>
+									<hr style={{ margin: ".25rem .5rem" }}></hr>
 									<li>
 										<Link to={`/${username}/course-tracker`} className="dropdown-item">
 											<Book className="me-1" />

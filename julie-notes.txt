@@ -1,5 +1,13 @@
 TODOS: 
 
+- [ ] change admin pages so that you have to have the role of admin to access those pages (not just to see the options in the navbar)
+- [ ] update footer info
+- [ ] fix navbar view when on small/med screen
+- [ ] protect the backend - 3001 with an admin password
+- [ ] get forget password page working
+- [ ] add a see preview button next to get started (video of what it looks like - features - but quick version)
+
+
 - [ ] make sure you can't clikc and drag order when it's not in edit mode
 - [ ] in detail notes pop up, make sure x-axis scroll is off/disabled
 - [ ] when you click on the edit btn the form should not be unexpanded (make sure it's expanded)
@@ -11,7 +19,6 @@ TODOS:
 - [ ] make course number to 35 max characters
 - [ ] add a print and a share link buttons on top right
 - [ ] settings button to edit Profile and info
-- [ ] fix/change footer (styling & content)
 
 - [ ] make the courses sortable by expected start date, start date, due date, by course number, course number, maybe a custom option so the users can move it around as needed
 - [ ] when editing or adding a new course finishes, I want the page to go back to the top of the screen possibly

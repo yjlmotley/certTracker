@@ -17,6 +17,7 @@ import { AdminCourseTracker } from "./pages/adminCourseTracker";
 import { AdminCertificationTracker } from "./pages/adminCertificationTracker";
 import { CourseTracker } from "./pages/courseTracker";
 import { CertificationTracker } from "./pages/certificationTracker";
+import GettingStarted from "./pages/gettingStarted.js";
 import SignUp from "./pages/signUp";
 import Login from "./pages/login";
 
@@ -41,6 +42,7 @@ const Layout = () => {
                                 <Route element={<Login />} path="/login" />
                                 <Route element={<ForgotPassword />} path="/forgot-password" />
                                 <Route element={<ChangePassword />} path="/change-password" />
+                                <Route element={<GettingStarted />} path="/getting-started" />
                                 <Route element={<AdminCourseTracker />} path="/admin-course-tracker" />
                                 <Route element={<AdminCertificationTracker />} path="/admin-certification-tracker" />
                                 <Route element={<CourseTracker />} path="/:username/course-tracker" />

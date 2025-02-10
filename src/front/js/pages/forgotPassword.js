@@ -42,7 +42,7 @@ export const ForgotPassword = () => {
                 }
             } catch (error) {
                 setErrMsg(error.message)
-            }// This is where I began coding at work
+            }
         } else {
             if (password !== confirmPassword) {
                 setErrMsg("passwords do not match");
@@ -65,9 +65,9 @@ export const ForgotPassword = () => {
             } catch (error) {
                 setErrMsg(error.message);
             }
-        }//  Stopped coding at work here
+        }
     }
-    // terniary if no token show email, if token show 2 password inputs. set up an error
+    
     return (
         <div className="container mt-5 forgot-password-div auth">
             <div className="row justify-content-center">
@@ -142,7 +142,7 @@ export const ForgotPassword = () => {
                                 }
 
                                 <button type="submit" className="btn btn-dark w-100">Submit</button>
-                                <Link className="" to="/signup"><p className='text-center mt-4'>Click here to sign up</p></Link>
+                                <Link to="/login"><p className='text-center mt-4'>Go back to Login</p></Link>
                             </form>
                         </div>
                     </div>

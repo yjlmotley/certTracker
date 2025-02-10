@@ -17,7 +17,7 @@ export const Home = () => {
             Get Started
           </Link>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-6 d-flex justify-content-center">
           <img src="https://www.greentrainingusa.com/media/icons/medium/cert-tracker.jpg" alt="Study illustration" className="img-fluid" />
         </div>
       </div>
