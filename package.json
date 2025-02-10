@@ -1,7 +1,7 @@
 {
 	"name": "react-hello-webapp",
 	"engines": {
-		"node": "16.x"
+		"node": "22.x"
 	},
 	"version": "1.0.1",
 	"description": "",
@@ -73,6 +73,7 @@
 		]
 	},
 	"dependencies": {
+		"22": "^0.0.0",
 		"prop-types": "^15.6.1",
 		"react": "^17.0.2",
 		"react-bootstrap": "^2.10.5",
