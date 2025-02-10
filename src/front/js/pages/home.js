@@ -10,6 +10,9 @@ export const Home = () => {
           <p className="lead mb-4">
             CourseKeeper helps you stay accountable and organized with your self-paced learning. Keep track of your courses, set goals, and achieve more.
           </p>
+          <p className="lead mb-4">
+            Share your certifications or course page with others with a click of a button!
+          </p>
           <Link to="/sign-up" className="btn btn-success btn-lg">
             Get Started
           </Link>
