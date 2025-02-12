@@ -6,6 +6,7 @@ TODOS:
 - [ ] protect the backend - 3001 with an admin password
 - [ ] contact us page - and create a link to it in the reset-password email
 - [ ] add a see preview button next to get started (video of what it looks like - features - but quick version)
+- [ ] create a share link button
 
 
 - [ ] make sure you can't clikc and drag order when it's not in edit mode
@@ -45,25 +46,12 @@ or...
 
 
 - [ ] bug checks: max characters check/alerts
-- [ ] I want to see the eyeballs even when the field/input is active
-
-
--------- brain storming --------
-* have them also sign in with a unique username (required)
-    * then attach a username with (user) with the courses & certifications
-
-    * they can also sign in with their username &/or email
-
-    * then the link will always work like this
-        *hosting.com/course-tracker/username
-        or
-        *hosting.com/cert-tracker/username
 
 
 -------- notes --------
 * link for cert-tracker img: https://www.greentrainingusa.com/media/icons/medium/cert-tracker.jpg
-
 * You will only be able to see the edit courses button if the logged in user_id matches the user_id of the courses
+* You can share your course or cert page with anyone 
 
 -------- installs needed ----------
 * npm install react-dnd react-dnd-html5-backend
