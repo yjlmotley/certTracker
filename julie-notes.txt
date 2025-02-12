@@ -1,15 +1,18 @@
 TODOS: 
 
 - [ ] change admin pages so that you have to have the role of admin to access those pages (not just to see the options in the navbar)
-- [ ] update footer info
-- [ ] fix navbar view when on small/med screen
 - [ ] protect the backend - 3001 with an admin password
+
+- [ ] fix navbar view when on small/med screen
 - [ ] contact us page - and create a link to it in the reset-password email
+- [ ] update footer info
+
 - [ ] add a see preview button next to get started (video of what it looks like - features - but quick version)
-- [ ] create a share link button
+- [ ] create a share link button - on cert and course page
+
+- [ ] !BUG! make sure you can't clikc and drag order when it's not in edit mode
 
 
-- [ ] make sure you can't clikc and drag order when it's not in edit mode
 - [ ] in detail notes pop up, make sure x-axis scroll is off/disabled
 - [ ] when you click on the edit btn the form should not be unexpanded (make sure it's expanded)
 - [ ] add password strength (min. 5 character with letters & numbers & username format (length & allowed characters))
