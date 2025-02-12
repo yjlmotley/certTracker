@@ -4,7 +4,7 @@ TODOS:
 - [ ] update footer info
 - [ ] fix navbar view when on small/med screen
 - [ ] protect the backend - 3001 with an admin password
-- [ ] get forget password page working
+- [ ] contact us page - and create a link to it in the reset-password email
 - [ ] add a see preview button next to get started (video of what it looks like - features - but quick version)
 
 
@@ -32,7 +32,6 @@ you'll probably have to export/import Modal for the course/project form)
 
 TODOS:
 - [ ] Redesign the signup/login/forgot password
-- [ ] Create a contact us
 - [ ] Instead of sending jwt token to edit to match the user - change the logic so you can only see the edit mode, if the user_id matches?? (then you would need to adjust the logic to the flux and routes as well but the code would be simpler... just a thought...)
 
 - [ ] add a image field (using cloudinary) (maybe a button you hover over: once you hoverd, you see an img link that opens in a new tab &/or the description showing (that you could copy & paste as well))

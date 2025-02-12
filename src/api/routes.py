@@ -106,14 +106,75 @@ def forgot_password():
 
     user = User.query.filter_by(email=email).first()
     if user is None: 
-        return jsonify({"message": "email does not exist"}), 400
+        return jsonify({"message": "Email address not found"}), 400
     
     expiration_time=datetime.utcnow() + timedelta(hours = 1)
     token = jwt.encode({"email": email, "exp": expiration_time}, os.getenv("FLASK_APP_KEY"), algorithm="HS256")
 
-    email_value=f"Click here to reset password.\n{os.getenv('FRONTEND_URL')}/forgot-password?token={token}"
-    send_email(email, email_value, "Password Recovery: CertTracker")
-    return jsonify({"message": "recovery email sent"}), 200
+    reset_link = f"{os.getenv('FRONTEND_URL')}/forgot-password?token={token}"
+    
+    email_html = f"""
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f5f5f5;">
+        <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
+            <div style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <img src="{os.getenv('FRONTEND_URL')}/cust_cert.ico" alt="Cert Tracker" style="max-width: 150px;">
+                </div>
+                
+                <h2 style="color: #2E7D32; margin: 0 0 20px; font-size: 24px; text-align: center;">Password Reset Request</h2>
+                
+                <p style="color: #333333; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Hello {user.first_name},</p>
+                
+                <p style="color: #333333; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">We received a request to reset your password for your Cert Tracker account. If you didn't make this request, you can safely ignore this email.</p>
+                
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="{reset_link}" 
+                       style="background-color: #2E7D32; 
+                              color: white; 
+                              padding: 14px 28px; 
+                              text-decoration: none; 
+                              border-radius: 4px; 
+                              display: inline-block;
+                              font-size: 16px;
+                              font-weight: bold;
+                              box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        Reset Password
+                    </a>
+                </div>
+                
+                <p style="color: #666666; font-size: 14px; line-height: 1.5; margin-bottom: 10px;">This link will expire in 1 hour for security reasons.</p>
+                
+                <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 30px 0;">
+                
+                <p style="color: #666666; font-size: 14px; line-height: 1.5; margin: 0;">
+                    Best regards,<br>
+                    The Cert Tracker Team
+                </p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="color: #666666; font-size: 12px;">
+                    © 2025 Cert Tracker. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    try:
+        send_email(email, email_html, "Password Reset Request: Cert Tracker")
+        return jsonify({
+            "message": "Password reset instructions have been sent to your email"
+        }), 200
+    except Exception as e:
+        return jsonify({
+            "message": "Failed to send reset email. Please try again later."
+        }), 500
     
 
 
@@ -126,19 +187,39 @@ def reset_password(token):
         decoded_token=jwt.decode(token, os.getenv("FLASK_APP_KEY"), algorithms=["HS256"])
         email=decoded_token.get("email")
     except jwt.ExpiredSignatureError:
-        return jsonify({"message": "Token has expired" }), 400
+        return jsonify({"message": "Reset link has expired. Please request a new one." }), 401
     except jwt.InvalidTokenError:
-        return jsonify({"message": "Invalid token"}), 400
+        return jsonify({"message": "Invalid reset link. Please request a new one."}), 401
     
     user=User.query.filter_by(email=email).first()
     if not user:
-        return jsonify({"message": "User does not exist"}), 400
+        return jsonify({"message": "User not found"}), 404
     
     user.password=generate_password_hash(password)
     db.session.commit()
 
-    send_email(email, "password successfully reset", "password reset confirmation for Koyo")
-    return jsonify({"message": "password reset email sent"}), 200
+    confirmation_email = f"""
+        <html>
+        <body style="margin: 0; padding: 0; background-color: #f5f5f5;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
+                <div style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <h2 style="color: #2E7D32; margin: 0 0 20px; font-size: 24px; text-align: center;">Password Reset Successful</h2>
+                    
+                    <p style="color: #333333; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
+                        Your password has been successfully reset. You can now log in with your new password.
+                    </p>
+                    
+                    <p style="color: #666666; font-size: 14px; margin-top: 30px;">
+                        If you did not make this change, please contact our support team immediately.
+                    </p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+
+    send_email(email, confirmation_email, "Password Reset Successful - Cert Tracker")
+    return jsonify({"message": "Password has been reset successfully"}), 200
 
 
 # ---------------------------------- COURSES ROUTES ----------------------------------
